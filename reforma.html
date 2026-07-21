@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Reforma da Cobertura</title>
+<style>
+:root{
+  --ink:#1a1c1a;
+  --paper:#f5f2ec;
+  --line:#d8d2c6;
+  --steel:#3a5a68;
+  --steel-dk:#2a434e;
+  --amber:#e08a2b;
+  --amber-soft:#f4e3cc;
+  --green:#4a7856;
+  --red:#b3543f;
+  --muted:#8a8478;
+  --card:#fffdf9;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
+html,body{background:var(--paper);color:var(--ink);
+  font-family:-apple-system,"Segoe UI",Roboto,sans-serif;
+  font-size:16px;line-height:1.4;-webkit-text-size-adjust:100%}
+body{padding-bottom:90px}
+
+/* header */
+header{background:var(--steel-dk);color:var(--paper);
+  padding:14px 16px calc(14px + env(safe-area-inset-top)) 16px;
+  padding-top:calc(14px + env(safe-area-inset-top));
+  position:sticky;top:0;z-index:40;box-shadow:0 2px 10px rgba(0,0,0,.15)}
+.h-top{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+header h1{font-size:19px;font-weight:800;letter-spacing:-.3px;
+  font-variant:all-small-caps;letter-spacing:1px}
+header .tag{font-size:11px;color:#9fb8c2;font-weight:600;
+  text-transform:uppercase;letter-spacing:1.5px}
+
+/* totals bar */
+.totals{display:flex;gap:10px;margin-top:10px;overflow-x:auto;padding-bottom:2px}
+.chip{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);
+  border-radius:10px;padding:7px 11px;flex:0 0 auto;min-width:78px}
+.chip .n{font-size:17px;font-weight:800;line-height:1}
+.chip .l{font-size:10px;color:#9fb8c2;text-transform:uppercase;
+  letter-spacing:.5px;margin-top:3px}
+
+/* room tabs */
+.tabs{display:flex;gap:6px;overflow-x:auto;padding:10px 12px 0;
+  background:var(--paper);position:sticky;
+  top:0;z-index:30;-webkit-overflow-scrolling:touch}
+.tab{flex:0 0 auto;padding:9px 14px;border-radius:10px 10px 0 0;
+  background:var(--line);color:#5a554b;font-weight:700;font-size:14px;
+  border:1px solid transparent;border-bottom:none;white-space:nowrap;
+  display:flex;align-items:center;gap:6px}
+.tab.active{background:var(--card);color:var(--ink);
+  border-color:var(--line);box-shadow:0 -2px 6px rgba(0,0,0,.04)}
+.tab .cnt{font-size:11px;background:var(--steel);color:#fff;
+  border-radius:20px;padding:1px 6px;font-weight:800}
+.tab.active .cnt{background:var(--amber)}
+.tab-add{flex:0 0 auto;padding:9px 13px;border-radius:10px;
+  background:none;border:1.5px dashed var(--steel);color:var(--steel);
+  font-weight:800;font-size:16px}
+
+/* body */
+main{padding:14px 12px}
+.floor-head{display:flex;align-items:center;gap:8px;margin:4px 2px 12px}
+.floor-head .name{font-size:22px;font-weight:800;letter-spacing:-.4px}
+.floor-head .edit{font-size:13px;color:var(--steel);font-weight:700;
+  background:none;border:none;padding:4px}
+
+.section-lbl{font-size:11px;font-weight:800;text-transform:uppercase;
+  letter-spacing:1.2px;color:var(--muted);margin:18px 4px 8px;
+  display:flex;align-items:center;gap:8px}
+.section-lbl::after{content:"";flex:1;height:1px;background:var(--line)}
+
+/* task rows */
+.task{display:flex;align-items:flex-start;gap:11px;background:var(--card);
+  border:1px solid var(--line);border-radius:12px;padding:12px 13px;margin-bottom:8px}
+.task .box{width:24px;height:24px;border-radius:7px;border:2px solid var(--steel);
+  flex:0 0 auto;margin-top:1px;display:flex;align-items:center;
+  justify-content:center;font-size:15px;color:#fff;font-weight:900}
+.task.done .box{background:var(--green);border-color:var(--green)}
+.task .txt{flex:1;font-size:15px;font-weight:500}
+.task.done .txt{text-decoration:line-through;color:var(--muted)}
+.task .del{color:var(--muted);font-size:20px;padding:0 4px;background:none;border:none}
+
+/* object cards */
+.obj{background:var(--card);border:1px solid var(--line);border-radius:12px;
+  padding:12px 13px;margin-bottom:8px}
+.obj-top{display:flex;align-items:flex-start;gap:10px}
+.obj-title{flex:1;font-size:16px;font-weight:700}
+.obj-title .qty{color:var(--steel);font-weight:800}
+.status-pill{font-size:11px;font-weight:800;padding:4px 9px;border-radius:20px;
+  text-transform:uppercase;letter-spacing:.4px;flex:0 0 auto}
+.st-remover{background:#f7e0da;color:var(--red)}
+.st-transportar{background:var(--amber-soft);color:#a5641a}
+.st-realocar{background:#dce9df;color:var(--green)}
+.obj-meta{display:flex;gap:14px;margin-top:9px;font-size:13px;color:#6a655a;
+  flex-wrap:wrap;align-items:center}
+.obj-meta b{color:var(--ink);font-weight:800}
+.obj-meta .cat{background:var(--paper);border:1px solid var(--line);
+  border-radius:6px;padding:2px 7px;font-weight:600;font-size:12px}
+.obj-actions{display:flex;gap:6px;margin-top:11px}
+.obj-actions button{flex:1;font-size:12px;font-weight:800;padding:7px;
+  border-radius:8px;border:1px solid var(--line);background:var(--paper);
+  color:#5a554b;text-transform:uppercase;letter-spacing:.4px}
+.obj-actions button.active-r{background:var(--red);color:#fff;border-color:var(--red)}
+.obj-actions button.active-t{background:var(--amber);color:#fff;border-color:var(--amber)}
+.obj-actions button.active-l{background:var(--green);color:#fff;border-color:var(--green)}
+.obj-del{color:var(--muted);font-size:19px;background:none;border:none;padding:0 2px}
+
+.empty{text-align:center;color:var(--muted);font-size:14px;
+  padding:26px 20px;border:1.5px dashed var(--line);border-radius:12px;
+  background:rgba(255,255,255,.4)}
+.empty b{display:block;color:#6a655a;margin-bottom:4px;font-size:15px}
+
+/* add buttons inline */
+.add-inline{width:100%;padding:12px;border-radius:12px;
+  border:1.5px dashed var(--steel);background:none;color:var(--steel);
+  font-weight:800;font-size:14px;margin-top:2px;display:flex;
+  align-items:center;justify-content:center;gap:6px}
+
+/* dimension summary */
+.dim-card{background:var(--steel-dk);color:var(--paper);border-radius:14px;
+  padding:16px;margin:6px 2px 4px}
+.dim-card h3{font-size:13px;text-transform:uppercase;letter-spacing:1.2px;
+  color:#9fb8c2;margin-bottom:12px;font-weight:800}
+.dim-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.dim-cell .n{font-size:26px;font-weight:800;line-height:1}
+.dim-cell .u{font-size:12px;color:#9fb8c2}
+.dim-cell .l{font-size:12px;margin-top:3px;color:#c5d3d9}
+.dim-break{margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,.15)}
+.dim-row{display:flex;justify-content:space-between;font-size:13px;
+  padding:5px 0;color:#d5ddda}
+.dim-row b{color:#fff;font-weight:800}
+
+/* bottom nav */
+.bottomnav{position:fixed;bottom:0;left:0;right:0;background:var(--card);
+  border-top:1px solid var(--line);display:flex;z-index:40;
+  padding-bottom:env(safe-area-inset-bottom)}
+.bottomnav button{flex:1;background:none;border:none;padding:9px 4px;
+  color:var(--muted);font-size:10px;font-weight:700;display:flex;
+  flex-direction:column;align-items:center;gap:3px;text-transform:uppercase;
+  letter-spacing:.4px}
+.bottomnav button.on{color:var(--steel-dk)}
+.bottomnav button.on .ic{background:var(--amber-soft)}
+.bottomnav .ic{font-size:20px;width:44px;height:32px;display:flex;
+  align-items:center;justify-content:center;border-radius:10px}
+
+/* modal */
+.modal-bg{position:fixed;inset:0;background:rgba(20,22,20,.55);z-index:100;
+  display:none;align-items:flex-end;backdrop-filter:blur(2px)}
+.modal-bg.show{display:flex}
+.modal{background:var(--paper);width:100%;border-radius:20px 20px 0 0;
+  padding:20px 18px calc(24px + env(safe-area-inset-bottom));
+  max-height:92vh;overflow-y:auto;animation:up .25s ease}
+@keyframes up{from{transform:translateY(40px);opacity:.6}to{transform:none;opacity:1}}
+.modal h2{font-size:19px;font-weight:800;margin-bottom:4px}
+.modal .sub{font-size:13px;color:var(--muted);margin-bottom:16px}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:12px;font-weight:800;
+  text-transform:uppercase;letter-spacing:.6px;color:#6a655a;margin-bottom:6px}
+.field input,.field select,.field textarea{width:100%;padding:12px;
+  border:1.5px solid var(--line);border-radius:10px;font-size:16px;
+  background:var(--card);color:var(--ink);font-family:inherit}
+.field input:focus,.field select:focus{outline:none;border-color:var(--steel)}
+.row2{display:flex;gap:10px}.row2 .field{flex:1}
+.seg{display:flex;gap:6px}
+.seg button{flex:1;padding:11px 4px;border-radius:10px;border:1.5px solid var(--line);
+  background:var(--card);font-weight:800;font-size:13px;color:#5a554b}
+.seg button.sel-r{background:var(--red);color:#fff;border-color:var(--red)}
+.seg button.sel-t{background:var(--amber);color:#fff;border-color:var(--amber)}
+.seg button.sel-l{background:var(--green);color:#fff;border-color:var(--green)}
+.hint{font-size:12px;color:var(--muted);margin-top:5px}
+.modal-actions{display:flex;gap:10px;margin-top:8px}
+.btn{padding:14px;border-radius:12px;font-weight:800;font-size:15px;
+  border:none;flex:1;text-align:center}
+.btn-primary{background:var(--steel-dk);color:#fff}
+.btn-ghost{background:none;color:var(--muted);flex:0 0 auto;padding:14px 18px}
+
+.catgrid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.catgrid button{padding:10px 8px;border:1.5px solid var(--line);border-radius:10px;
+  background:var(--card);text-align:left;font-size:13px;font-weight:700;color:#5a554b}
+.catgrid button.sel{border-color:var(--steel);background:var(--amber-soft)}
+.catgrid button small{display:block;font-weight:600;color:var(--muted);
+  font-size:11px;margin-top:2px}
+
+.io-note{font-size:12px;color:var(--muted);line-height:1.5;
+  background:var(--card);border:1px solid var(--line);border-radius:10px;
+  padding:11px;margin-bottom:14px}
+.io-note b{color:var(--ink)}
+.toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);
+  background:var(--ink);color:#fff;padding:11px 18px;border-radius:24px;
+  font-size:13px;font-weight:700;z-index:200;opacity:0;transition:.25s;
+  pointer-events:none;white-space:nowrap;max-width:90vw}
+.toast.show{opacity:1;bottom:110px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="h-top">
+    <h1>Reforma da Cobertura</h1>
+    <span class="tag" id="userTag">—</span>
+  </div>
+  <div class="totals" id="totals"></div>
+</header>
+
+<div class="tabs" id="tabs"></div>
+
+<main id="main"></main>
+
+<nav class="bottomnav">
+  <button class="on" data-view="room" onclick="setView('room')">
+    <span class="ic">🗂️</span>Cômodo</button>
+  <button data-view="dim" onclick="setView('dim')">
+    <span class="ic">⚖️</span>Dimensões</button>
+  <button data-view="io" onclick="setView('io')">
+    <span class="ic">🔄</span>Backup</button>
+</nav>
+
+<!-- Modal genérico -->
+<div class="modal-bg" id="modalBg" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modalContent"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+/* ---------- Categorias com peso/volume padrão (editáveis) ---------- */
+const CATS = [
+  {id:"caixa_p",   nome:"Caixa pequena",   peso:6,  vol:0.03},
+  {id:"caixa_m",   nome:"Caixa média",     peso:12, vol:0.06},
+  {id:"caixa_g",   nome:"Caixa grande",    peso:20, vol:0.12},
+  {id:"cadeira",   nome:"Cadeira",         peso:7,  vol:0.15},
+  {id:"poltrona",  nome:"Poltrona",        peso:25, vol:0.5},
+  {id:"sofa",      nome:"Sofá",            peso:45, vol:1.4},
+  {id:"mesa",      nome:"Mesa",            peso:30, vol:0.8},
+  {id:"estante",   nome:"Estante/armário", peso:50, vol:1.2},
+  {id:"cama",      nome:"Cama",            peso:40, vol:1.6},
+  {id:"eletro_g",  nome:"Eletro grande",   peso:60, vol:0.9},
+  {id:"eletro_p",  nome:"Eletro pequeno",  peso:8,  vol:0.05},
+  {id:"quadro",    nome:"Quadro/espelho",  peso:5,  vol:0.04},
+  {id:"tapete",    nome:"Tapete enrolado", peso:10, vol:0.1},
+  {id:"planta",    nome:"Vaso/planta",     peso:15, vol:0.2},
+  {id:"outro",     nome:"Outro",           peso:5,  vol:0.05}
+];
+const STATUS = {
+  remover:{lbl:"Remover", cls:"r"},
+  transportar:{lbl:"Transportar", cls:"t"},
+  realocar:{lbl:"Realocar", cls:"l"}
+};
+
+/* ---------- Estado ---------- */
+const KEY = "reforma_cobertura_v1";
+let state = load();
+let view = "room";
+let activeRoom = state.rooms[0] ? state.rooms[0].id : null;
+
+function load(){
+  try{
+    const raw = localStorage.getItem(KEY);
+    if(raw) return JSON.parse(raw);
+  }catch(e){}
+  return seed();
+}
+function seed(){
+  return {
+    user: null,
+    rooms:[
+      {id:rid(), nome:"Térreo", tasks:[], objs:[]},
+      {id:rid(), nome:"Superior", tasks:[], objs:[]}
+    ]
+  };
+}
+function save(){ try{localStorage.setItem(KEY, JSON.stringify(state));}catch(e){toast("Erro ao salvar");} }
+function rid(){ return "r"+Math.random().toString(36).slice(2,8); }
+function room(){ return state.rooms.find(r=>r.id===activeRoom); }
+
+/* ---------- Cálculo dimensionamento ---------- */
+function catById(id){ return CATS.find(c=>c.id===id) || CATS[CATS.length-1]; }
+function objWeight(o){ return (o.pesoUnit) * o.qty; }
+function objVolume(o){ return (o.volUnit) * o.qty; }
+function allObjs(){ return state.rooms.flatMap(r=>r.objs.map(o=>({...o,_room:r.nome}))); }
+
+/* ---------- Render principal ---------- */
+function render(){
+  document.getElementById("userTag").textContent = state.user ? "👤 "+state.user : "sem nome";
+  renderTotals();
+  renderTabs();
+  document.querySelectorAll(".bottomnav button").forEach(b=>
+    b.classList.toggle("on", b.dataset.view===view));
+  const m = document.getElementById("main");
+  if(view==="room") m.innerHTML = viewRoom();
+  else if(view==="dim") m.innerHTML = viewDim();
+  else m.innerHTML = viewIO();
+  bindRoomEvents();
+}
+
+function renderTotals(){
+  const objs = allObjs();
+  const w = objs.reduce((s,o)=>s+objWeight(o),0);
+  const v = objs.reduce((s,o)=>s+objVolume(o),0);
+  const tasks = state.rooms.flatMap(r=>r.tasks);
+  const done = tasks.filter(t=>t.done).length;
+  const el = document.getElementById("totals");
+  el.innerHTML = `
+    <div class="chip"><div class="n">${objs.reduce((s,o)=>s+o.qty,0)}</div><div class="l">Objetos</div></div>
+    <div class="chip"><div class="n">${fmt(w)}<span style="font-size:11px"> kg</span></div><div class="l">Peso total</div></div>
+    <div class="chip"><div class="n">${fmt(v)}<span style="font-size:11px"> m³</span></div><div class="l">Volume</div></div>
+    <div class="chip"><div class="n">${done}/${tasks.length}</div><div class="l">Tarefas</div></div>`;
+}
+
+function renderTabs(){
+  const el = document.getElementById("tabs");
+  el.innerHTML = state.rooms.map(r=>{
+    const cnt = r.objs.reduce((s,o)=>s+o.qty,0);
+    return `<button class="tab ${r.id===activeRoom?'active':''}" onclick="selectRoom('${r.id}')">
+      ${esc(r.nome)} ${cnt?`<span class="cnt">${cnt}</span>`:""}</button>`;
+  }).join("") + `<button class="tab-add" onclick="addRoom()">＋</button>`;
+}
+
+/* ---------- View: Cômodo ---------- */
+function viewRoom(){
+  const r = room();
+  if(!r) return `<div class="empty"><b>Nenhum cômodo</b>Toque em ＋ acima para criar o primeiro cômodo da inspeção.</div>`;
+  const objs = r.objs;
+  const tasks = r.tasks;
+
+  let objHtml = objs.length ? objs.map(o=>{
+    const st = STATUS[o.status];
+    return `<div class="obj">
+      <div class="obj-top">
+        <div class="obj-title">${o.qty>1?`<span class="qty">${o.qty}×</span> `:""}${esc(o.nome)}</div>
+        <span class="status-pill st-${o.status}">${st.lbl}</span>
+        <button class="obj-del" onclick="delObj('${o.id}')">🗑</button>
+      </div>
+      <div class="obj-meta">
+        <span class="cat">${esc(catById(o.cat).nome)}</span>
+        <span>⚖️ <b>${fmt(objWeight(o))}</b> kg</span>
+        <span>📦 <b>${fmt(objVolume(o))}</b> m³</span>
+      </div>
+      ${o.dest?`<div class="obj-meta"><span>→ destino: <b>${esc(o.dest)}</b></span></div>`:""}
+      <div class="obj-actions">
+        ${Object.keys(STATUS).map(s=>`<button class="${o.status===s?'active-'+STATUS[s].cls:''}"
+           onclick="setStatus('${o.id}','${s}')">${STATUS[s].lbl}</button>`).join("")}
+      </div>
+    </div>`;
+  }).join("") : `<div class="empty"><b>Sem objetos aqui</b>Liste móveis, caixas e itens pessoais a remover, transportar ou realocar.</div>`;
+
+  let taskHtml = tasks.length ? tasks.map(t=>`
+    <div class="task ${t.done?'done':''}">
+      <button class="box" onclick="toggleTask('${t.id}')">${t.done?'✓':''}</button>
+      <div class="txt" onclick="toggleTask('${t.id}')">${esc(t.text)}</div>
+      <button class="del" onclick="delTask('${t.id}')">×</button>
+    </div>`).join("") : `<div class="empty"><b>Sem tarefas</b>O que precisa ser feito neste cômodo?</div>`;
+
+  return `
+    <div class="floor-head">
+      <span class="name">${esc(r.nome)}</span>
+      <button class="edit" onclick="renameRoom('${r.id}')">renomear</button>
+      <button class="edit" style="color:var(--red)" onclick="delRoom('${r.id}')">excluir</button>
+    </div>
+    <div class="section-lbl">📦 Objetos a mover</div>
+    ${objHtml}
+    <button class="add-inline" onclick="objModal()">＋ Adicionar objeto</button>
+    <div class="section-lbl">✅ Tarefas do cômodo</div>
+    ${taskHtml}
+    <button class="add-inline" onclick="taskModal()">＋ Adicionar tarefa</button>`;
+}
+
+/* ---------- View: Dimensões ---------- */
+function viewDim(){
+  const objs = allObjs();
+  if(!objs.length) return `<div class="empty" style="margin-top:20px"><b>Sem dados ainda</b>Adicione objetos nos cômodos para ver o dimensionamento de peso e volume.</div>`;
+
+  const totW = objs.reduce((s,o)=>s+objWeight(o),0);
+  const totV = objs.reduce((s,o)=>s+objVolume(o),0);
+
+  // por status
+  const byStatus = {};
+  Object.keys(STATUS).forEach(s=>byStatus[s]={w:0,v:0,n:0});
+  objs.forEach(o=>{byStatus[o.status].w+=objWeight(o);byStatus[o.status].v+=objVolume(o);byStatus[o.status].n+=o.qty;});
+
+  // por cômodo
+  const byRoom = state.rooms.map(r=>({
+    nome:r.nome,
+    w:r.objs.reduce((s,o)=>s+objWeight(o),0),
+    v:r.objs.reduce((s,o)=>s+objVolume(o),0)
+  })).filter(r=>r.w>0).sort((a,b)=>b.v-a.v);
+
+  const truck = 12; // m³ de referência p/ caminhão de mudança médio
+  const trucks = totV/truck;
+
+  return `
+    <div class="dim-card">
+      <h3>Total a movimentar</h3>
+      <div class="dim-grid">
+        <div class="dim-cell"><div class="n">${fmt(totW)} <span class="u">kg</span></div><div class="l">Peso estimado</div></div>
+        <div class="dim-cell"><div class="n">${fmt(totV)} <span class="u">m³</span></div><div class="l">Volume estimado</div></div>
+      </div>
+      <div class="dim-break">
+        <div class="dim-row"><span>Equivale a</span><b>${trucks<1?"menos de 1":fmt(trucks)} caminhão(ões)</b></div>
+        <div class="dim-row" style="color:#9fb8c2;font-size:11px"><span>referência: baú ~${truck} m³</span><span></span></div>
+      </div>
+    </div>
+
+    <div class="section-lbl">Por destino</div>
+    ${Object.keys(STATUS).map(s=>byStatus[s].n?`
+      <div class="obj"><div class="obj-top">
+        <div class="obj-title">${STATUS[s].lbl}</div>
+        <span class="status-pill st-${s}">${byStatus[s].n} itens</span>
+      </div>
+      <div class="obj-meta"><span>⚖️ <b>${fmt(byStatus[s].w)}</b> kg</span><span>📦 <b>${fmt(byStatus[s].v)}</b> m³</span></div>
+      </div>`:"").join("")}
+
+    <div class="section-lbl">Por cômodo (volume)</div>
+    ${byRoom.map(r=>{
+      const pct = Math.round(r.v/totV*100);
+      return `<div class="obj" style="padding:11px 13px">
+        <div style="display:flex;justify-content:space-between;font-weight:700;font-size:14px">
+          <span>${esc(r.nome)}</span><span>${fmt(r.v)} m³ · ${fmt(r.w)} kg</span></div>
+        <div style="height:8px;background:var(--line);border-radius:6px;margin-top:8px;overflow:hidden">
+          <div style="height:100%;width:${pct}%;background:var(--steel)"></div></div>
+      </div>`;
+    }).join("")}
+
+    <div class="io-note" style="margin-top:18px">
+      <b>Como ler:</b> os valores são estimativas a partir das categorias de cada objeto. Ajuste peso/volume ao cadastrar um item se souber o valor real — o dimensionamento recalcula sozinho.
+    </div>`;
+}
+
+/* ---------- View: Backup / GitHub ---------- */
+function viewIO(){
+  return `
+    <div class="floor-head"><span class="name">Backup</span></div>
+    <div class="io-note">
+      Este app guarda tudo <b>no próprio aparelho</b>. Para compartilhar com a Claudia,
+      exporte o arquivo, suba no GitHub, e ela importa no iPhone dela. Trabalhem
+      <b>um de cada vez</b> e exportem ao terminar para não perder edições.
+    </div>
+    <div class="field">
+      <label>Seu nome (aparece no topo)</label>
+      <input id="userName" value="${state.user?esc(state.user):''}" placeholder="Ex: Rodrigo">
+    </div>
+    <button class="add-inline" style="border-style:solid;background:var(--steel-dk);color:#fff;border-color:var(--steel-dk)" onclick="saveName()">Salvar nome</button>
+
+    <div class="section-lbl">Exportar</div>
+    <button class="add-inline" onclick="exportJSON()">⬇️ Baixar arquivo (.json)</button>
+    <button class="add-inline" onclick="copyJSON()">📋 Copiar dados para colar</button>
+
+    <div class="section-lbl">Importar</div>
+    <div class="io-note">Cole abaixo o conteúdo de um arquivo exportado e toque em importar. <b>Isso substitui</b> os dados atuais deste aparelho.</div>
+    <div class="field"><textarea id="importArea" rows="4" placeholder="Cole aqui o conteúdo do backup..."></textarea></div>
+    <button class="add-inline" onclick="importJSON()">⬆️ Importar dados colados</button>
+
+    <div class="section-lbl">Zerar</div>
+    <button class="add-inline" style="border-color:var(--red);color:var(--red)" onclick="resetAll()">🗑 Apagar tudo deste aparelho</button>`;
+}
+
+/* ---------- Ações: cômodos ---------- */
+function selectRoom(id){ activeRoom=id; if(view!=="room")view="room"; render(); }
+function setView(v){ view=v; render(); }
+
+function addRoom(){
+  modal(`<h2>Novo cômodo</h2><p class="sub">Crie conforme avança na inspeção.</p>
+    <div class="field"><label>Nome do cômodo</label>
+      <input id="rn" placeholder="Ex: Sala, Cozinha, Suíte, Terraço" autofocus></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
+      <button class="btn btn-primary" onclick="confirmAddRoom()">Criar</button></div>`);
+  setTimeout(()=>document.getElementById("rn").focus(),100);
+}
+function confirmAddRoom(){
+  const n=document.getElementById("rn").value.trim();
+  if(!n){toast("Digite um nome");return;}
+  const nr={id:rid(),nome:n,tasks:[],objs:[]};
+  state.rooms.push(nr); activeRoom=nr.id; save(); closeModal(); render(); toast("Cômodo criado");
+}
+function renameRoom(id){
+  const r=state.rooms.find(x=>x.id===id);
+  modal(`<h2>Renomear cômodo</h2>
+    <div class="field"><label>Nome</label><input id="rn" value="${esc(r.nome)}"></div>
+    <div class="modal-actions"><button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
+    <button class="btn btn-primary" onclick="confirmRename('${id}')">Salvar</button></div>`);
+  setTimeout(()=>document.getElementById("rn").select(),100);
+}
+function confirmRename(id){
+  const n=document.getElementById("rn").value.trim(); if(!n)return;
+  state.rooms.find(x=>x.id===id).nome=n; save(); closeModal(); render();
+}
+function delRoom(id){
+  const r=state.rooms.find(x=>x.id===id);
+  if(!confirm(`Excluir "${r.nome}" e todos os seus itens?`))return;
+  state.rooms=state.rooms.filter(x=>x.id!==id);
+  if(activeRoom===id) activeRoom=state.rooms[0]?state.rooms[0].id:null;
+  save(); render(); toast("Cômodo excluído");
+}
+
+/* ---------- Ações: tarefas ---------- */
+function taskModal(){
+  modal(`<h2>Nova tarefa</h2><p class="sub">${esc(room().nome)}</p>
+    <div class="field"><label>O que precisa ser feito</label>
+      <input id="tt" placeholder="Ex: Proteger piso, retirar cortinas"></div>
+    <div class="modal-actions"><button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
+    <button class="btn btn-primary" onclick="confirmTask()">Adicionar</button></div>`);
+  setTimeout(()=>{const i=document.getElementById("tt");i.focus();
+    i.addEventListener("keydown",e=>{if(e.key==="Enter")confirmTask();});},100);
+}
+function confirmTask(){
+  const t=document.getElementById("tt").value.trim(); if(!t)return;
+  room().tasks.push({id:rid(),text:t,done:false}); save(); closeModal(); render();
+}
+function toggleTask(id){const t=room().tasks.find(x=>x.id===id);t.done=!t.done;save();render();}
+function delTask(id){room().tasks=room().tasks.filter(x=>x.id!==id);save();render();}
+
+/* ---------- Ações: objetos ---------- */
+let draftCat = "caixa_m", draftStatus = "transportar";
+function objModal(){
+  draftCat="caixa_m"; draftStatus="transportar";
+  const c=catById(draftCat);
+  modal(`<h2>Adicionar objeto</h2><p class="sub">${esc(room().nome)}</p>
+    <div class="field"><label>O que é</label>
+      <input id="on" placeholder="Ex: Livros da estante, TV da sala"></div>
+
+    <div class="field"><label>Categoria (define peso/volume padrão)</label>
+      <div class="catgrid" id="catgrid">
+        ${CATS.map(c=>`<button data-cat="${c.id}" class="${c.id===draftCat?'sel':''}" onclick="pickCat('${c.id}')">
+          ${c.nome}<small>${c.peso}kg · ${c.vol}m³</small></button>`).join("")}
+      </div></div>
+
+    <div class="row2">
+      <div class="field"><label>Quantidade</label><input id="oq" type="number" inputmode="numeric" value="1" min="1"></div>
+      <div class="field"><label>Peso un. (kg)</label><input id="ow" type="number" inputmode="decimal" value="${c.peso}" step="0.5"></div>
+      <div class="field"><label>Volume un. (m³)</label><input id="ov" type="number" inputmode="decimal" value="${c.vol}" step="0.01"></div>
+    </div>
+    <div class="hint">Valores puxados da categoria — ajuste se souber o real.</div>
+
+    <div class="field" style="margin-top:14px"><label>Destino do item</label>
+      <div class="seg" id="statusSeg">
+        ${Object.keys(STATUS).map(s=>`<button data-st="${s}" class="${s===draftStatus?'sel-'+STATUS[s].cls:''}"
+          onclick="pickStatus('${s}')">${STATUS[s].lbl}</button>`).join("")}
+      </div></div>
+    <div class="field"><label>Para onde vai (opcional)</label>
+      <input id="od" placeholder="Ex: Depósito, quarto da Ana, doação"></div>
+
+    <div class="modal-actions"><button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
+    <button class="btn btn-primary" onclick="confirmObj()">Adicionar</button></div>`);
+  setTimeout(()=>document.getElementById("on").focus(),100);
+}
+function pickCat(id){
+  draftCat=id; const c=catById(id);
+  document.querySelectorAll("#catgrid button").forEach(b=>b.classList.toggle("sel",b.dataset.cat===id));
+  document.getElementById("ow").value=c.peso;
+  document.getElementById("ov").value=c.vol;
+}
+function pickStatus(s){
+  draftStatus=s;
+  document.querySelectorAll("#statusSeg button").forEach(b=>{
+    b.className="";
+    if(b.dataset.st===s)b.classList.add("sel-"+STATUS[s].cls);
+  });
+}
+function confirmObj(){
+  const nome=document.getElementById("on").value.trim();
+  if(!nome){toast("Diga o que é o objeto");return;}
+  const qty=Math.max(1,parseInt(document.getElementById("oq").value)||1);
+  const pesoUnit=parseFloat(document.getElementById("ow").value)||0;
+  const volUnit=parseFloat(document.getElementById("ov").value)||0;
+  const dest=document.getElementById("od").value.trim();
+  room().objs.push({id:rid(),nome,cat:draftCat,qty,pesoUnit,volUnit,status:draftStatus,dest});
+  save(); closeModal(); render(); toast("Objeto adicionado");
+}
+function setStatus(id,s){const o=room().objs.find(x=>x.id===id);o.status=s;save();render();}
+function delObj(id){room().objs=room().objs.filter(x=>x.id!==id);save();render();}
+
+/* ---------- Backup ---------- */
+function saveName(){state.user=document.getElementById("userName").value.trim()||null;save();render();toast("Nome salvo");}
+function exportJSON(){
+  const blob=new Blob([JSON.stringify(state,null,2)],{type:"application/json"});
+  const url=URL.createObjectURL(blob);const a=document.createElement("a");
+  const d=new Date().toISOString().slice(0,10);
+  a.href=url;a.download=`reforma-${d}.json`;a.click();URL.revokeObjectURL(url);
+  toast("Arquivo gerado");
+}
+function copyJSON(){
+  const txt=JSON.stringify(state);
+  navigator.clipboard?.writeText(txt).then(()=>toast("Copiado — cole no GitHub"),()=>fallbackCopy(txt));
+}
+function fallbackCopy(txt){
+  const ta=document.createElement("textarea");ta.value=txt;document.body.appendChild(ta);
+  ta.select();document.execCommand("copy");ta.remove();toast("Copiado");
+}
+function importJSON(){
+  const raw=document.getElementById("importArea").value.trim();
+  if(!raw){toast("Cole os dados primeiro");return;}
+  try{
+    const obj=JSON.parse(raw);
+    if(!obj.rooms||!Array.isArray(obj.rooms))throw new Error();
+    if(!confirm("Substituir os dados atuais deste aparelho pelos importados?"))return;
+    state=obj; activeRoom=state.rooms[0]?state.rooms[0].id:null;
+    save(); render(); toast("Dados importados");
+  }catch(e){toast("Arquivo inválido");}
+}
+function resetAll(){
+  if(!confirm("Apagar TODOS os dados deste aparelho? Não dá para desfazer."))return;
+  state=seed(); activeRoom=state.rooms[0].id; save(); render(); toast("Tudo apagado");
+}
+
+/* ---------- Modal infra ---------- */
+function modal(html){document.getElementById("modalContent").innerHTML=html;
+  document.getElementById("modalBg").classList.add("show");}
+function closeModal(){document.getElementById("modalBg").classList.remove("show");}
+function bindRoomEvents(){}
+
+/* ---------- Utils ---------- */
+function fmt(n){
+  if(n===0)return"0";
+  if(n>=100)return Math.round(n).toLocaleString("pt-BR");
+  if(n>=10)return n.toFixed(1).replace(".",",");
+  return n.toFixed(2).replace(".",",").replace(/,?0+$/,"");
+}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function toast(m){const t=document.getElementById("toast");t.textContent=m;t.classList.add("show");
+  clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove("show"),1900);}
+
+render();
+</script>
+</body>
+</html>
