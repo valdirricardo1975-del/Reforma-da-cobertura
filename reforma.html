@@ -93,22 +93,26 @@ main{padding:14px 12px}
 .obj-title .qty{color:var(--steel);font-weight:800}
 .status-pill{font-size:11px;font-weight:800;padding:4px 9px;border-radius:20px;
   text-transform:uppercase;letter-spacing:.4px;flex:0 0 auto}
-.st-remover{background:#f7e0da;color:var(--red)}
-.st-transportar{background:var(--amber-soft);color:#a5641a}
-.st-realocar{background:#dce9df;color:var(--green)}
 .obj-meta{display:flex;gap:14px;margin-top:9px;font-size:13px;color:#6a655a;
   flex-wrap:wrap;align-items:center}
 .obj-meta b{color:var(--ink);font-weight:800}
 .obj-meta .cat{background:var(--paper);border:1px solid var(--line);
   border-radius:6px;padding:2px 7px;font-weight:600;font-size:12px}
-.obj-actions{display:flex;gap:6px;margin-top:11px}
-.obj-actions button{flex:1;font-size:12px;font-weight:800;padding:7px;
+.obj-actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:11px}
+.obj-actions button{flex:1 1 22%;min-width:72px;font-size:11px;font-weight:800;padding:7px 4px;
   border-radius:8px;border:1px solid var(--line);background:var(--paper);
-  color:#5a554b;text-transform:uppercase;letter-spacing:.4px}
-.obj-actions button.active-r{background:var(--red);color:#fff;border-color:var(--red)}
-.obj-actions button.active-t{background:var(--amber);color:#fff;border-color:var(--amber)}
-.obj-actions button.active-l{background:var(--green);color:#fff;border-color:var(--green)}
+  color:#5a554b;text-transform:uppercase;letter-spacing:.3px}
 .obj-del{color:var(--muted);font-size:19px;background:none;border:none;padding:0 2px}
+
+/* photos */
+.fotos{display:flex;gap:7px;margin-top:10px;flex-wrap:wrap;align-items:center}
+.fotos img{width:62px;height:62px;object-fit:cover;border-radius:9px;
+  border:1px solid var(--line)}
+.foto-add{width:62px;height:62px;border-radius:9px;border:1.5px dashed var(--steel);
+  background:none;color:var(--steel);font-size:20px;display:flex;
+  align-items:center;justify-content:center;flex-direction:column;gap:1px}
+.foto-add small{font-size:9px;font-weight:800;letter-spacing:.4px}
+.foto-view{max-width:100%;max-height:60vh;border-radius:12px;display:block;margin:0 auto}
 
 .empty{text-align:center;color:var(--muted);font-size:14px;
   padding:26px 20px;border:1.5px dashed var(--line);border-radius:12px;
@@ -135,6 +139,18 @@ main{padding:14px 12px}
   padding:5px 0;color:#d5ddda}
 .dim-row b{color:#fff;font-weight:800}
 
+/* lista geral */
+.list-item{display:flex;gap:10px;align-items:flex-start;padding:9px 2px;
+  border-bottom:1px solid var(--line);font-size:14px}
+.list-item:last-child{border-bottom:none}
+.list-item .thumb{width:40px;height:40px;object-fit:cover;border-radius:7px;
+  border:1px solid var(--line);flex:0 0 auto}
+.list-item .info{flex:1}
+.list-item .rm{font-size:12px;color:var(--muted)}
+.wa-btn{width:100%;padding:11px;border-radius:10px;border:none;
+  background:#1faa53;color:#fff;font-weight:800;font-size:13px;margin-top:10px;
+  display:flex;align-items:center;justify-content:center;gap:6px}
+
 /* bottom nav */
 .bottomnav{position:fixed;bottom:0;left:0;right:0;background:var(--card);
   border-top:1px solid var(--line);display:flex;z-index:40;
@@ -142,11 +158,13 @@ main{padding:14px 12px}
 .bottomnav button{flex:1;background:none;border:none;padding:9px 4px;
   color:var(--muted);font-size:10px;font-weight:700;display:flex;
   flex-direction:column;align-items:center;gap:3px;text-transform:uppercase;
-  letter-spacing:.4px}
+  letter-spacing:.4px;position:relative}
 .bottomnav button.on{color:var(--steel-dk)}
 .bottomnav button.on .ic{background:var(--amber-soft)}
 .bottomnav .ic{font-size:20px;width:44px;height:32px;display:flex;
   align-items:center;justify-content:center;border-radius:10px}
+.bottomnav .dot{position:absolute;top:6px;right:calc(50% - 26px);width:9px;height:9px;
+  border-radius:50%;background:var(--red);border:1.5px solid var(--card)}
 
 /* modal */
 .modal-bg{position:fixed;inset:0;background:rgba(20,22,20,.55);z-index:100;
@@ -166,18 +184,16 @@ main{padding:14px 12px}
   background:var(--card);color:var(--ink);font-family:inherit}
 .field input:focus,.field select:focus{outline:none;border-color:var(--steel)}
 .row2{display:flex;gap:10px}.row2 .field{flex:1}
-.seg{display:flex;gap:6px}
-.seg button{flex:1;padding:11px 4px;border-radius:10px;border:1.5px solid var(--line);
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.seg button{padding:11px 4px;border-radius:10px;border:1.5px solid var(--line);
   background:var(--card);font-weight:800;font-size:13px;color:#5a554b}
-.seg button.sel-r{background:var(--red);color:#fff;border-color:var(--red)}
-.seg button.sel-t{background:var(--amber);color:#fff;border-color:var(--amber)}
-.seg button.sel-l{background:var(--green);color:#fff;border-color:var(--green)}
 .hint{font-size:12px;color:var(--muted);margin-top:5px}
 .modal-actions{display:flex;gap:10px;margin-top:8px}
 .btn{padding:14px;border-radius:12px;font-weight:800;font-size:15px;
   border:none;flex:1;text-align:center}
 .btn-primary{background:var(--steel-dk);color:#fff}
 .btn-ghost{background:none;color:var(--muted);flex:0 0 auto;padding:14px 18px}
+.btn-danger{background:var(--red);color:#fff}
 
 .catgrid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
 .catgrid button{padding:10px 8px;border:1.5px solid var(--line);border-radius:10px;
@@ -190,6 +206,10 @@ main{padding:14px 12px}
   background:var(--card);border:1px solid var(--line);border-radius:10px;
   padding:11px;margin-bottom:14px}
 .io-note b{color:var(--ink)}
+.io-warn{background:#f7e0da;border-color:#e0b3a6;color:#7a3a2b}
+.io-warn b{color:#7a3a2b}
+.io-ok{background:#dce9df;border-color:#b7ccbd;color:#2f5c3c}
+.io-ok b{color:#2f5c3c}
 .toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);
   background:var(--ink);color:#fff;padding:11px 18px;border-radius:24px;
   font-size:13px;font-weight:700;z-index:200;opacity:0;transition:.25s;
@@ -214,9 +234,11 @@ main{padding:14px 12px}
 <nav class="bottomnav">
   <button class="on" data-view="room" onclick="setView('room')">
     <span class="ic">🗂️</span>Cômodo</button>
+  <button data-view="list" onclick="setView('list')">
+    <span class="ic">📋</span>Lista</button>
   <button data-view="dim" onclick="setView('dim')">
     <span class="ic">⚖️</span>Dimensões</button>
-  <button data-view="io" onclick="setView('io')">
+  <button data-view="io" onclick="setView('io')" id="navIO">
     <span class="ic">🔄</span>Backup</button>
 </nav>
 
@@ -224,6 +246,8 @@ main{padding:14px 12px}
 <div class="modal-bg" id="modalBg" onclick="if(event.target===this)closeModal()">
   <div class="modal" id="modalContent"></div>
 </div>
+
+<input type="file" id="fotoInput" accept="image/*" style="display:none" multiple>
 
 <div class="toast" id="toast"></div>
 
@@ -247,11 +271,17 @@ const CATS = [
   {id:"planta",    nome:"Vaso/planta",     peso:15, vol:0.2},
   {id:"outro",     nome:"Outro",           peso:5,  vol:0.05}
 ];
+/* Destinos: 3 originais + 4 novos. "destLbl" é o rótulo do campo complementar. */
 const STATUS = {
-  remover:{lbl:"Remover", cls:"r"},
-  transportar:{lbl:"Transportar", cls:"t"},
-  realocar:{lbl:"Realocar", cls:"l"}
+  remover:     {lbl:"Remover",     bg:"#f7e0da", fg:"#b3543f", solid:"#b3543f", destLbl:"Para onde vai (opcional)", destPre:"destino"},
+  transportar: {lbl:"Transportar", bg:"#f4e3cc", fg:"#a5641a", solid:"#e08a2b", destLbl:"Para onde vai (opcional)", destPre:"destino"},
+  realocar:    {lbl:"Realocar",    bg:"#dce9df", fg:"#4a7856", solid:"#4a7856", destLbl:"Para onde vai (opcional)", destPre:"destino"},
+  doar:        {lbl:"Doar",        bg:"#e7dff0", fg:"#6a4d96", solid:"#6a4d96", destLbl:"Doar para quem?", destPre:"doar para"},
+  descartar:   {lbl:"Descartar",   bg:"#e6e2da", fg:"#5a554b", solid:"#6a655a", destLbl:"Observação (opcional)", destPre:"obs"},
+  guardar:     {lbl:"Guardar",     bg:"#dbe6ec", fg:"#2a5a74", solid:"#3a5a68", destLbl:"Onde será guardado (opcional)", destPre:"guardar em"},
+  brasilia:    {lbl:"Brasília",    bg:"#d9ece9", fg:"#1f6e63", solid:"#1f7a6e", destLbl:"Observação (opcional)", destPre:"obs"}
 };
+const MAX_FOTOS = 3;
 
 /* ---------- Estado ---------- */
 const KEY = "reforma_cobertura_v1";
@@ -262,28 +292,44 @@ let activeRoom = state.rooms[0] ? state.rooms[0].id : null;
 function load(){
   try{
     const raw = localStorage.getItem(KEY);
-    if(raw) return JSON.parse(raw);
+    if(raw) return migrate(JSON.parse(raw));
   }catch(e){}
   return seed();
 }
 function seed(){
-  return {
-    user: null,
-    rooms:[
-      {id:rid(), nome:"Térreo", tasks:[], objs:[]},
-      {id:rid(), nome:"Superior", tasks:[], objs:[]}
-    ]
-  };
+  /* começa sem cômodos pré-criados — crie conforme a necessidade */
+  return { user:null, rooms:[], lastEdit:0, lastExport:0 };
 }
-function save(){ try{localStorage.setItem(KEY, JSON.stringify(state));}catch(e){toast("Erro ao salvar");} }
+function migrate(s){
+  if(!Array.isArray(s.rooms)) s.rooms = [];
+  if(typeof s.lastEdit  !== "number") s.lastEdit  = 0;
+  if(typeof s.lastExport!== "number") s.lastExport= 0;
+  s.rooms.forEach(r=>{
+    if(!Array.isArray(r.tasks)) r.tasks=[];
+    if(!Array.isArray(r.objs))  r.objs=[];
+    r.objs.forEach(o=>{
+      if(!Array.isArray(o.fotos)) o.fotos=[];
+      if(!STATUS[o.status]) o.status="transportar";
+    });
+  });
+  return s;
+}
+function persist(){ try{localStorage.setItem(KEY, JSON.stringify(state));}catch(e){
+  toast("Sem espaço para salvar — remova fotos");} }
+function save(){ state.lastEdit = Date.now(); persist(); }
 function rid(){ return "r"+Math.random().toString(36).slice(2,8); }
 function room(){ return state.rooms.find(r=>r.id===activeRoom); }
+function dirty(){ return state.lastEdit > state.lastExport; }
 
 /* ---------- Cálculo dimensionamento ---------- */
 function catById(id){ return CATS.find(c=>c.id===id) || CATS[CATS.length-1]; }
 function objWeight(o){ return (o.pesoUnit) * o.qty; }
 function objVolume(o){ return (o.volUnit) * o.qty; }
-function allObjs(){ return state.rooms.flatMap(r=>r.objs.map(o=>({...o,_room:r.nome}))); }
+function allObjs(){ return state.rooms.flatMap(r=>r.objs.map(o=>({...o,_room:r.nome,_roomId:r.id}))); }
+function findObj(id){
+  for(const r of state.rooms){ const o=r.objs.find(x=>x.id===id); if(o) return o; }
+  return null;
+}
 
 /* ---------- Render principal ---------- */
 function render(){
@@ -292,11 +338,14 @@ function render(){
   renderTabs();
   document.querySelectorAll(".bottomnav button").forEach(b=>
     b.classList.toggle("on", b.dataset.view===view));
+  const nav=document.getElementById("navIO");
+  nav.querySelector(".dot")?.remove();
+  if(dirty()){const d=document.createElement("span");d.className="dot";nav.appendChild(d);}
   const m = document.getElementById("main");
   if(view==="room") m.innerHTML = viewRoom();
+  else if(view==="list") m.innerHTML = viewList();
   else if(view==="dim") m.innerHTML = viewDim();
   else m.innerHTML = viewIO();
-  bindRoomEvents();
 }
 
 function renderTotals(){
@@ -319,22 +368,41 @@ function renderTabs(){
     const cnt = r.objs.reduce((s,o)=>s+o.qty,0);
     return `<button class="tab ${r.id===activeRoom?'active':''}" onclick="selectRoom('${r.id}')">
       ${esc(r.nome)} ${cnt?`<span class="cnt">${cnt}</span>`:""}</button>`;
-  }).join("") + `<button class="tab-add" onclick="addRoom()">＋</button>`;
+  }).join("") + `<button class="tab-add" onclick="addRoom()">＋ cômodo</button>`;
+}
+
+/* ---------- Fotos de um objeto (HTML compartilhado) ---------- */
+function fotosHtml(o){
+  const imgs = o.fotos.map((f,i)=>
+    `<img src="${f}" alt="foto" onclick="viewFoto('${o.id}',${i})">`).join("");
+  const add = o.fotos.length < MAX_FOTOS
+    ? `<button class="foto-add" onclick="addFotos('${o.id}')">📷<small>+ foto</small></button>` : "";
+  if(!imgs && !add) return "";
+  return `<div class="fotos">${imgs}${add}</div>`;
+}
+function pillHtml(o){
+  const st=STATUS[o.status];
+  return `<span class="status-pill" style="background:${st.bg};color:${st.fg}">${st.lbl}</span>`;
+}
+function destLine(o){
+  if(!o.dest) return "";
+  const st=STATUS[o.status];
+  return `<div class="obj-meta"><span>→ ${st.destPre}: <b>${esc(o.dest)}</b></span></div>`;
 }
 
 /* ---------- View: Cômodo ---------- */
 function viewRoom(){
   const r = room();
-  if(!r) return `<div class="empty"><b>Nenhum cômodo</b>Toque em ＋ acima para criar o primeiro cômodo da inspeção.</div>`;
+  if(!r) return `<div class="empty" style="margin-top:14px"><b>Nenhum cômodo ainda</b>
+    Toque em <b>＋ cômodo</b> acima para criar o primeiro (ex.: Sala, Cozinha, Suíte).</div>`;
   const objs = r.objs;
   const tasks = r.tasks;
 
   let objHtml = objs.length ? objs.map(o=>{
-    const st = STATUS[o.status];
     return `<div class="obj">
       <div class="obj-top">
         <div class="obj-title">${o.qty>1?`<span class="qty">${o.qty}×</span> `:""}${esc(o.nome)}</div>
-        <span class="status-pill st-${o.status}">${st.lbl}</span>
+        ${pillHtml(o)}
         <button class="obj-del" onclick="delObj('${o.id}')">🗑</button>
       </div>
       <div class="obj-meta">
@@ -342,13 +410,18 @@ function viewRoom(){
         <span>⚖️ <b>${fmt(objWeight(o))}</b> kg</span>
         <span>📦 <b>${fmt(objVolume(o))}</b> m³</span>
       </div>
-      ${o.dest?`<div class="obj-meta"><span>→ destino: <b>${esc(o.dest)}</b></span></div>`:""}
+      ${destLine(o)}
+      ${fotosHtml(o)}
       <div class="obj-actions">
-        ${Object.keys(STATUS).map(s=>`<button class="${o.status===s?'active-'+STATUS[s].cls:''}"
-           onclick="setStatus('${o.id}','${s}')">${STATUS[s].lbl}</button>`).join("")}
+        ${Object.keys(STATUS).map(s=>{
+          const on=o.status===s;
+          const st=STATUS[s];
+          const sty=on?`background:${st.solid};color:#fff;border-color:${st.solid}`:"";
+          return `<button style="${sty}" onclick="setStatus('${o.id}','${s}')">${st.lbl}</button>`;
+        }).join("")}
       </div>
     </div>`;
-  }).join("") : `<div class="empty"><b>Sem objetos aqui</b>Liste móveis, caixas e itens pessoais a remover, transportar ou realocar.</div>`;
+  }).join("") : `<div class="empty"><b>Sem objetos aqui</b>Liste móveis, caixas e itens, com fotos e destino de cada um.</div>`;
 
   let taskHtml = tasks.length ? tasks.map(t=>`
     <div class="task ${t.done?'done':''}">
@@ -363,12 +436,73 @@ function viewRoom(){
       <button class="edit" onclick="renameRoom('${r.id}')">renomear</button>
       <button class="edit" style="color:var(--red)" onclick="delRoom('${r.id}')">excluir</button>
     </div>
-    <div class="section-lbl">📦 Objetos a mover</div>
+    <div class="section-lbl">📦 Objetos e móveis</div>
     ${objHtml}
     <button class="add-inline" onclick="objModal()">＋ Adicionar objeto</button>
     <div class="section-lbl">✅ Tarefas do cômodo</div>
     ${taskHtml}
     <button class="add-inline" onclick="taskModal()">＋ Adicionar tarefa</button>`;
+}
+
+/* ---------- View: Lista geral por destino ---------- */
+function viewList(){
+  const objs = allObjs();
+  if(!objs.length) return `<div class="floor-head"><span class="name">Lista geral</span></div>
+    <div class="empty"><b>Nada listado ainda</b>Adicione objetos nos cômodos — aqui eles aparecem agrupados por destino.</div>`;
+
+  const groups = Object.keys(STATUS).map(s=>{
+    const list = objs.filter(o=>o.status===s);
+    if(!list.length) return "";
+    const st = STATUS[s];
+    const w = list.reduce((a,o)=>a+objWeight(o),0);
+    const v = list.reduce((a,o)=>a+objVolume(o),0);
+    const n = list.reduce((a,o)=>a+o.qty,0);
+    const items = list.map(o=>`
+      <div class="list-item">
+        ${o.fotos[0]?`<img class="thumb" src="${o.fotos[0]}" onclick="viewFoto('${o.id}',0)">`:""}
+        <div class="info">
+          <b>${o.qty>1?o.qty+"× ":""}${esc(o.nome)}</b>
+          <div class="rm">${esc(o._room)}${o.dest?` · ${STATUS[o.status].destPre}: ${esc(o.dest)}`:""}</div>
+        </div>
+      </div>`).join("");
+    return `<div class="obj">
+      <div class="obj-top">
+        <div class="obj-title">${st.lbl}</div>
+        <span class="status-pill" style="background:${st.bg};color:${st.fg}">${n} itens</span>
+      </div>
+      <div class="obj-meta"><span>⚖️ <b>${fmt(w)}</b> kg</span><span>📦 <b>${fmt(v)}</b> m³</span></div>
+      <div style="margin-top:8px">${items}</div>
+      <button class="wa-btn" onclick="shareWA('${s}')">💬 Compartilhar esta lista no WhatsApp</button>
+    </div>`;
+  }).join("");
+
+  return `
+    <div class="floor-head"><span class="name">Lista geral</span></div>
+    <div class="io-note">Todos os objetos de todos os cômodos, agrupados por destino. Útil para
+      organizar doações, o descarte e a carga para Brasília.</div>
+    ${groups}
+    <button class="wa-btn" style="background:var(--steel-dk)" onclick="shareWA('')">💬 Compartilhar lista completa no WhatsApp</button>`;
+}
+
+function buildListText(statusFilter){
+  const objs = allObjs();
+  const lines = ["📋 Reforma da Cobertura — "+new Date().toLocaleDateString("pt-BR")];
+  Object.keys(STATUS).forEach(s=>{
+    if(statusFilter && s!==statusFilter) return;
+    const list=objs.filter(o=>o.status===s);
+    if(!list.length) return;
+    lines.push("", "▪ "+STATUS[s].lbl.toUpperCase()+" ("+list.reduce((a,o)=>a+o.qty,0)+" itens)");
+    list.forEach(o=>{
+      let l="  • "+(o.qty>1?o.qty+"× ":"")+o.nome+" ("+o._room+")";
+      if(o.dest) l+=" — "+STATUS[s].destPre+": "+o.dest;
+      lines.push(l);
+    });
+  });
+  return lines.join("\n");
+}
+function shareWA(statusFilter){
+  const txt=buildListText(statusFilter);
+  window.open("https://wa.me/?text="+encodeURIComponent(txt),"_blank");
 }
 
 /* ---------- View: Dimensões ---------- */
@@ -411,7 +545,7 @@ function viewDim(){
     ${Object.keys(STATUS).map(s=>byStatus[s].n?`
       <div class="obj"><div class="obj-top">
         <div class="obj-title">${STATUS[s].lbl}</div>
-        <span class="status-pill st-${s}">${byStatus[s].n} itens</span>
+        <span class="status-pill" style="background:${STATUS[s].bg};color:${STATUS[s].fg}">${byStatus[s].n} itens</span>
       </div>
       <div class="obj-meta"><span>⚖️ <b>${fmt(byStatus[s].w)}</b> kg</span><span>📦 <b>${fmt(byStatus[s].v)}</b> m³</span></div>
       </div>`:"").join("")}
@@ -434,10 +568,17 @@ function viewDim(){
 
 /* ---------- View: Backup / GitHub ---------- */
 function viewIO(){
+  const fmtDT = t=>t?new Date(t).toLocaleString("pt-BR",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"}):"nunca";
+  const warn = dirty()
+    ? `<div class="io-note io-warn"><b>⚠️ Há edições não exportadas.</b>
+        Última exportação: <b>${fmtDT(state.lastExport)}</b> · última edição: <b>${fmtDT(state.lastEdit)}</b>.
+        Exporte antes de fechar para não perder nada ao sincronizar com a Claudia.</div>`
+    : `<div class="io-note io-ok"><b>✓ Tudo exportado.</b> Última exportação: <b>${fmtDT(state.lastExport)}</b>.</div>`;
   return `
     <div class="floor-head"><span class="name">Backup</span></div>
+    ${warn}
     <div class="io-note">
-      Este app guarda tudo <b>no próprio aparelho</b>. Para compartilhar com a Claudia,
+      Este app guarda tudo <b>no próprio aparelho</b>, incluindo as fotos. Para compartilhar com a Claudia,
       exporte o arquivo, suba no GitHub, e ela importa no iPhone dela. Trabalhem
       <b>um de cada vez</b> e exportem ao terminar para não perder edições.
     </div>
@@ -450,6 +591,7 @@ function viewIO(){
     <div class="section-lbl">Exportar</div>
     <button class="add-inline" onclick="exportJSON()">⬇️ Baixar arquivo (.json)</button>
     <button class="add-inline" onclick="copyJSON()">📋 Copiar dados para colar</button>
+    <div class="hint">Com fotos o arquivo fica maior — normal. O GitHub aceita sem problema.</div>
 
     <div class="section-lbl">Importar</div>
     <div class="io-note">Cole abaixo o conteúdo de um arquivo exportado e toque em importar. <b>Isso substitui</b> os dados atuais deste aparelho.</div>
@@ -516,14 +658,85 @@ function confirmTask(){
 function toggleTask(id){const t=room().tasks.find(x=>x.id===id);t.done=!t.done;save();render();}
 function delTask(id){room().tasks=room().tasks.filter(x=>x.id!==id);save();render();}
 
+/* ---------- Fotos ---------- */
+let fotoTarget=null;      // id do objeto que receberá fotos (null = objeto em criação)
+let draftFotos=[];        // fotos do modal de novo objeto
+
+function compressImage(file){
+  return new Promise((resolve,reject)=>{
+    const reader=new FileReader();
+    reader.onerror=()=>reject();
+    reader.onload=()=>{
+      const img=new Image();
+      img.onerror=()=>reject();
+      img.onload=()=>{
+        const MAX=800;
+        let w=img.width,h=img.height;
+        if(w>h && w>MAX){h=Math.round(h*MAX/w);w=MAX;}
+        else if(h>=w && h>MAX){w=Math.round(w*MAX/h);h=MAX;}
+        const cv=document.createElement("canvas");cv.width=w;cv.height=h;
+        cv.getContext("2d").drawImage(img,0,0,w,h);
+        resolve(cv.toDataURL("image/jpeg",0.72));
+      };
+      img.src=reader.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+const fotoInput=document.getElementById("fotoInput");
+fotoInput.addEventListener("change", async e=>{
+  const files=[...e.target.files]; fotoInput.value="";
+  if(!files.length) return;
+  const target = fotoTarget ? findObj(fotoTarget) : null;
+  const list = target ? target.fotos : draftFotos;
+  const slots = MAX_FOTOS - list.length;
+  if(slots<=0){toast("Máximo de "+MAX_FOTOS+" fotos");return;}
+  toast("Processando foto...");
+  for(const f of files.slice(0,slots)){
+    try{ list.push(await compressImage(f)); }
+    catch(e){ toast("Não consegui ler uma das fotos"); }
+  }
+  if(target){ save(); render(); toast("Foto adicionada"); }
+  else{ renderDraftFotos(); }
+});
+
+function addFotos(objId){ fotoTarget=objId; fotoInput.click(); }
+function addDraftFotos(){ fotoTarget=null; fotoInput.click(); }
+function renderDraftFotos(){
+  const el=document.getElementById("draftFotos"); if(!el)return;
+  el.innerHTML = draftFotos.map((f,i)=>
+    `<img src="${f}" onclick="delDraftFoto(${i})" title="toque para remover">`).join("")
+    + (draftFotos.length<MAX_FOTOS
+      ? `<button class="foto-add" onclick="addDraftFotos()">📷<small>+ foto</small></button>`:"");
+}
+function delDraftFoto(i){ draftFotos.splice(i,1); renderDraftFotos(); }
+
+function viewFoto(objId,idx){
+  const o=findObj(objId); if(!o||!o.fotos[idx])return;
+  modal(`<h2>${esc(o.nome)}</h2><p class="sub">Foto ${idx+1} de ${o.fotos.length}</p>
+    <img class="foto-view" src="${o.fotos[idx]}">
+    <div class="modal-actions" style="margin-top:16px">
+      <button class="btn btn-ghost" onclick="closeModal()">Fechar</button>
+      <button class="btn btn-danger" onclick="delFoto('${objId}',${idx})">🗑 Excluir foto</button>
+    </div>`);
+}
+function delFoto(objId,idx){
+  const o=findObj(objId); if(!o)return;
+  o.fotos.splice(idx,1); save(); closeModal(); render(); toast("Foto excluída");
+}
+
 /* ---------- Ações: objetos ---------- */
 let draftCat = "caixa_m", draftStatus = "transportar";
 function objModal(){
-  draftCat="caixa_m"; draftStatus="transportar";
+  draftCat="caixa_m"; draftStatus="transportar"; draftFotos=[];
   const c=catById(draftCat);
   modal(`<h2>Adicionar objeto</h2><p class="sub">${esc(room().nome)}</p>
     <div class="field"><label>O que é</label>
       <input id="on" placeholder="Ex: Livros da estante, TV da sala"></div>
+
+    <div class="field"><label>Fotos (até ${MAX_FOTOS} — toque numa foto para remover)</label>
+      <div class="fotos" id="draftFotos"></div></div>
 
     <div class="field"><label>Categoria (define peso/volume padrão)</label>
       <div class="catgrid" id="catgrid">
@@ -540,14 +753,18 @@ function objModal(){
 
     <div class="field" style="margin-top:14px"><label>Destino do item</label>
       <div class="seg" id="statusSeg">
-        ${Object.keys(STATUS).map(s=>`<button data-st="${s}" class="${s===draftStatus?'sel-'+STATUS[s].cls:''}"
-          onclick="pickStatus('${s}')">${STATUS[s].lbl}</button>`).join("")}
+        ${Object.keys(STATUS).map(s=>{
+          const on=s===draftStatus, st=STATUS[s];
+          return `<button data-st="${s}" style="${on?`background:${st.solid};color:#fff;border-color:${st.solid}`:""}"
+            onclick="pickStatus('${s}')">${st.lbl}</button>`;
+        }).join("")}
       </div></div>
-    <div class="field"><label>Para onde vai (opcional)</label>
-      <input id="od" placeholder="Ex: Depósito, quarto da Ana, doação"></div>
+    <div class="field"><label id="destLbl">${STATUS[draftStatus].destLbl}</label>
+      <input id="od" placeholder="Ex: Depósito, quarto da Ana, Dona Maria"></div>
 
     <div class="modal-actions"><button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
     <button class="btn btn-primary" onclick="confirmObj()">Adicionar</button></div>`);
+  renderDraftFotos();
   setTimeout(()=>document.getElementById("on").focus(),100);
 }
 function pickCat(id){
@@ -559,39 +776,70 @@ function pickCat(id){
 function pickStatus(s){
   draftStatus=s;
   document.querySelectorAll("#statusSeg button").forEach(b=>{
-    b.className="";
-    if(b.dataset.st===s)b.classList.add("sel-"+STATUS[s].cls);
+    const st=STATUS[b.dataset.st];
+    b.style.cssText = b.dataset.st===s ? `background:${st.solid};color:#fff;border-color:${st.solid}` : "";
   });
+  const lbl=document.getElementById("destLbl");
+  if(lbl) lbl.textContent = STATUS[s].destLbl;
 }
 function confirmObj(){
   const nome=document.getElementById("on").value.trim();
   if(!nome){toast("Diga o que é o objeto");return;}
+  if(draftStatus==="doar" && !document.getElementById("od").value.trim()){
+    toast("Diga para quem será doado");return;
+  }
   const qty=Math.max(1,parseInt(document.getElementById("oq").value)||1);
   const pesoUnit=parseFloat(document.getElementById("ow").value)||0;
   const volUnit=parseFloat(document.getElementById("ov").value)||0;
   const dest=document.getElementById("od").value.trim();
-  room().objs.push({id:rid(),nome,cat:draftCat,qty,pesoUnit,volUnit,status:draftStatus,dest});
+  room().objs.push({id:rid(),nome,cat:draftCat,qty,pesoUnit,volUnit,status:draftStatus,dest,fotos:draftFotos});
+  draftFotos=[];
   save(); closeModal(); render(); toast("Objeto adicionado");
 }
-function setStatus(id,s){const o=room().objs.find(x=>x.id===id);o.status=s;save();render();}
-function delObj(id){room().objs=room().objs.filter(x=>x.id!==id);save();render();}
+function setStatus(id,s){
+  const o=findObj(id); if(!o)return;
+  o.status=s;
+  if(s==="doar" && !o.dest){
+    save();
+    modal(`<h2>Doar: ${esc(o.nome)}</h2>
+      <div class="field"><label>Doar para quem?</label>
+        <input id="dq" placeholder="Ex: Dona Maria, igreja, vizinho"></div>
+      <div class="modal-actions"><button class="btn btn-ghost" onclick="closeModal();render()">Depois</button>
+      <button class="btn btn-primary" onclick="confirmDoar('${id}')">Salvar</button></div>`);
+    setTimeout(()=>document.getElementById("dq").focus(),100);
+    return;
+  }
+  save(); render();
+}
+function confirmDoar(id){
+  const o=findObj(id); if(!o)return;
+  o.dest=document.getElementById("dq").value.trim();
+  save(); closeModal(); render();
+}
+function delObj(id){
+  for(const r of state.rooms) r.objs=r.objs.filter(x=>x.id!==id);
+  save(); render();
+}
 
 /* ---------- Backup ---------- */
 function saveName(){state.user=document.getElementById("userName").value.trim()||null;save();render();toast("Nome salvo");}
+function markExported(){ state.lastExport=Date.now(); persist(); }
 function exportJSON(){
+  markExported();
   const blob=new Blob([JSON.stringify(state,null,2)],{type:"application/json"});
   const url=URL.createObjectURL(blob);const a=document.createElement("a");
   const d=new Date().toISOString().slice(0,10);
   a.href=url;a.download=`reforma-${d}.json`;a.click();URL.revokeObjectURL(url);
-  toast("Arquivo gerado");
+  render(); toast("Arquivo gerado");
 }
 function copyJSON(){
+  markExported();
   const txt=JSON.stringify(state);
-  navigator.clipboard?.writeText(txt).then(()=>toast("Copiado — cole no GitHub"),()=>fallbackCopy(txt));
+  navigator.clipboard?.writeText(txt).then(()=>{render();toast("Copiado — cole no GitHub");},()=>fallbackCopy(txt));
 }
 function fallbackCopy(txt){
   const ta=document.createElement("textarea");ta.value=txt;document.body.appendChild(ta);
-  ta.select();document.execCommand("copy");ta.remove();toast("Copiado");
+  ta.select();document.execCommand("copy");ta.remove();render();toast("Copiado");
 }
 function importJSON(){
   const raw=document.getElementById("importArea").value.trim();
@@ -600,20 +848,20 @@ function importJSON(){
     const obj=JSON.parse(raw);
     if(!obj.rooms||!Array.isArray(obj.rooms))throw new Error();
     if(!confirm("Substituir os dados atuais deste aparelho pelos importados?"))return;
-    state=obj; activeRoom=state.rooms[0]?state.rooms[0].id:null;
-    save(); render(); toast("Dados importados");
+    state=migrate(obj); state.lastExport=Date.now(); state.lastEdit=state.lastExport;
+    activeRoom=state.rooms[0]?state.rooms[0].id:null;
+    persist(); render(); toast("Dados importados");
   }catch(e){toast("Arquivo inválido");}
 }
 function resetAll(){
   if(!confirm("Apagar TODOS os dados deste aparelho? Não dá para desfazer."))return;
-  state=seed(); activeRoom=state.rooms[0].id; save(); render(); toast("Tudo apagado");
+  state=seed(); activeRoom=null; persist(); render(); toast("Tudo apagado");
 }
 
 /* ---------- Modal infra ---------- */
 function modal(html){document.getElementById("modalContent").innerHTML=html;
   document.getElementById("modalBg").classList.add("show");}
 function closeModal(){document.getElementById("modalBg").classList.remove("show");}
-function bindRoomEvents(){}
 
 /* ---------- Utils ---------- */
 function fmt(n){
