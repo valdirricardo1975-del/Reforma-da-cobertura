@@ -51,12 +51,38 @@ trilha auditável da origem de cada informação (doc [06](docs/06-compliance-et
 
 ## Estado atual
 
-**Fase 0 — arquitetura e alinhamento.** Nenhum código de produção ainda: por decisão de
-projeto (ADR-0001), o modelo de domínio e os critérios de aceite vêm antes dos coletores.
-A Fase 1 entrega uma fatia vertical completa — de um edital real a um dossiê auditável.
+**Fase 1 em andamento — núcleo de domínio implementado.** Por decisão de projeto
+(ADR-0001), o modelo canônico vem antes dos coletores.
 
-Pendências que exigem decisão dos sócios estão listadas no doc 06, § 8, e no doc 07,
-Fase 0.
+Pronto e coberto por testes (`src/hasta/core/`):
+
+| Módulo | O que garante |
+|---|---|
+| `money.py` | dinheiro em centavos, `float` recusado; valor histórico só se compara depois de corrigido por índice **declarado** |
+| `intervalo.py` | `Faixa` p10/p50/p90; soma de quantis é recusada, porque quantis não somam |
+| `cnj.py` | número único CNJ: malformado levanta erro, dígito inconsistente é sinalizado e não descartado |
+| `enums.py` | vocabulário controlado, incluindo `MaturidadeValuation` (ADR-0012) |
+| `eventos.py` | taxonomia de eventos e funil P0–P5 com antecipação por estágio |
+| `estados.py` | máquinas de estado do procedimento concursal e da oportunidade |
+| `evidencia.py` | procedência obrigatória e muralha ética: origem pegajosa e portão que levanta exceção |
+| `entidades.py` | entidades canônicas do doc 03 |
+
+Decisões de escopo tomadas em 12/09/2026: ADR-0011 a 0014 (doc 02, § 6).
+
+**Escolha deliberada:** o mapeamento `código TPU → evento` está vazio e marcado como
+pendente (`CODIGOS_TPU_PENDENTES`), com teste que o mantém visível. Preencher de memória
+plantaria erro silencioso na base do funil — depende do spike de validação do DataJud.
+
+Pendências que exigem decisão dos sócios: doc 06, § 8.
+
+## Desenvolvimento
+
+```bash
+uv venv && uv pip install -e ".[dev]"
+.venv/bin/ruff check . && .venv/bin/ruff format --check .
+.venv/bin/mypy                 # strict, sem erros
+.venv/bin/python -m pytest -q  # roda offline, sem rede (ADR-0006)
+```
 
 ---
 

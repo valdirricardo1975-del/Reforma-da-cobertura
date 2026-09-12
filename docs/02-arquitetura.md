@@ -193,11 +193,59 @@ Fase 1 entrega uma classe do edital ao dossiê, ponta a ponta, antes de ampliar.
 *Por quê:* prova a arquitetura inteira com risco mínimo; evita o clássico "muitos
 coletores, nenhuma decisão".
 
+### ADR-0011 — Veículo de aquisição próprio e segregado
+*Decisão dos sócios em 12/09/2026.* A aquisição se dará por estrutura própria
+(holding/fundo/clube) formalmente separada da atividade advocatícia; o escritório não
+arremata em nome próprio.
+*Consequências arquiteturais:* (a) o Portão 1 depende da base de processos do escritório
+para cruzamento automático — insumo obrigatório, não opcional; (b) as pessoas vinculadas
+ao veículo entram numa lista verificada contra o art. 497, III, do Código Civil; (c) o
+dossiê precisa ser apresentável a um comitê de governança do veículo, com procedência
+completa; (d) o parecer interno do doc 06, § 8.2, é pré-requisito da **primeira
+aquisição**, não do desenvolvimento.
+
+### ADR-0012 — Pipeline multiclasse desde o dia 1, profundidade de valuation escalonada
+*Decisão dos sócios em 12/09/2026: "todos, com primazia aos imóveis urbanos".*
+Refina o ADR-0010: o **funil não é filtrado por classe** — todo ativo concursal é
+detectado, classificado e catalogado desde a Fase 1, qualquer que seja a classe. O que é
+escalonado é a **profundidade do valuation**, controlada por um atributo explícito:
+
+| `maturidade_valuation` | Significado | Efeito |
+|---|---|---|
+| `CALIBRADO` | modelo validado contra preços realizados (MAPE medido) | pode ser promovido ao feed com confiança plena |
+| `ESTIMADO` | método defensável, ainda sem calibração local | entra no feed com teto de confiança e rótulo visível |
+| `TRIAGEM` | apenas catalogado e monitorado; valor não estimável ainda | aparece na fila de diligência, nunca como recomendação |
+
+Ordem de promoção a `CALIBRADO`: `IMOVEL_URBANO` → `PLANTA_INDUSTRIAL`/galpão →
+`MAQUINA_EQUIPAMENTO`/`VEICULO` → `UPI` → `CARTEIRA_CREDITO`/`PRECATORIO` → demais.
+*Por quê:* atende à primazia do imóvel urbano sem perder nenhuma oportunidade das outras
+classes por omissão de cobertura — e mantém a honestidade do sistema, porque a incerteza
+fica rotulada em vez de disfarçada.
+
+### ADR-0013 — Cobertura SP–RJ–MG–PR sem construir três raspadores de tribunal
+*Decisão dos sócios em 12/09/2026.* Comarcas-alvo: eixo SP–RJ–MG–PR.
+Combinada com o ADR-0014, a consequência é favorável: **DataJud e DJEN são nacionais**,
+logo os quatro tribunais são cobertos por dois adaptadores, não por quatro. A coleta
+documental (RMA, plano, laudo, edital) é organizada **por ator** — administrador judicial
+e leiloeiro — e não por sistema processual (eSAJ/PJe/eproc/Projudi). Isso evita a
+multiplicação de raspadores de tribunal na Fase 1 e concentra o esforço onde o documento
+realmente está.
+*Consequência:* o ranking de esforço da Fase 1 é dado pelos **30 maiores AJs e
+leiloeiros com histórico concursal no eixo**, não pela geografia.
+
+### ADR-0014 — Só fontes oficiais gratuitas na Fase 1
+*Decisão dos sócios em 12/09/2026.* Núcleo apoiado exclusivamente em DataJud e DJEN.
+Provedor pago (Escavador, JUDIT, Digesto, Kurier) é reavaliado na Fase 2, com decisão
+baseada em número medido: custo por oportunidade promovida e ganho real de latência.
+*Por quê:* nossa vantagem é antecipação de meses, não de minutos — pagar por latência de
+minutos antes de provar o funil seria otimizar a variável errada. Efeito colateral
+desejado: o modelo canônico não nasce acoplado ao formato de nenhum fornecedor.
+
 ## 7. Pilha tecnológica proposta
 
 | Camada | Escolha | Justificativa |
 |---|---|---|
-| Linguagem | Python 3.12+, `uv`, `ruff`, `mypy`, `pytest` | ecossistema de dados/PDF/ML; contratação fácil |
+| Linguagem | Python 3.11+, `uv`, `ruff`, `mypy`, `pytest` | ecossistema de dados/PDF/ML; contratação fácil |
 | Domínio | Pydantic v2 + SQLAlchemy 2 + Alembic | validação e migração sérias |
 | Banco | PostgreSQL 16 (JSONB, `pgvector`) | um banco resolve relacional, documento e vetor |
 | Snapshots | *object storage* S3-compatível (MinIO local) | imutabilidade e custo |

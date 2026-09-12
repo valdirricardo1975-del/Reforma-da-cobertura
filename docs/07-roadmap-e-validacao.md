@@ -14,14 +14,24 @@ respostas às quatro perguntas de alinhamento; e decidem o escopo da fatia verti
 
 ## Fase 1 — Fatia vertical: de um edital a um dossiê
 
-Objetivo: provar a arquitetura inteira com **uma** classe de ativo e **uma** comarca.
+**Escopo consolidado pelas decisões de 12/09/2026** (ADR-0011 a 0014):
+
+| Dimensão | Decisão |
+|---|---|
+| Adquirente | veículo próprio segregado; Portão 1 exige a base de processos do escritório |
+| Classes de ativo | **todas** no funil; valuation escalonado por `maturidade_valuation`, com primazia do imóvel urbano |
+| Geografia | eixo SP–RJ–MG–PR — coberto por 2 adaptadores nacionais, não por 4 raspadores de tribunal |
+| Fontes | DataJud + DJEN apenas; documentos por ator (AJ e leiloeiro), não por sistema processual |
+
+Objetivo: provar a arquitetura inteira ponta a ponta com **uma** classe calibrada
+(imóvel urbano) e todas as demais em triagem catalogada.
 
 **Entrega**
 1. `core/` — entidades, `Evidencia`, `Money`, máquinas de estado, mapeamento TPU→evento;
-2. dois adaptadores de fonte reais (a definir: DataJud + DJEN, ou DJEN + um leiloeiro);
+2. adaptadores **DataJud** (movimentações/TPU) e **DJEN** (texto das publicações);
 3. `extract/` — parser de edital + extrator LLM com citação obrigatória;
-4. `score/` v0 — valor justo da classe escolhida, blindagem por regras, checklist de
-   vícios; TIR ajustada com p10/p50/p90;
+4. `score/` v0 — valor justo de imóvel urbano (`CALIBRADO`), blindagem por regras,
+   checklist de vícios; TIR ajustada com p10/p50/p90; demais classes em `TRIAGEM`;
 5. `compliance/` — Portões 1 e 2 funcionando (o 2 exige a base de processos do escritório);
 6. `report/` — dossiê em PDF/HTML com procedência de cada número;
 7. `tests/` — *fixtures* reais + golden files; suíte roda offline.
@@ -34,7 +44,9 @@ Objetivo: provar a arquitetura inteira com **uma** classe de ativo e **uma** com
   de forma estável?
 
 **Aceite**
-- 10 lotes reais processados ponta a ponta, com dossiê revisado por advogado do time;
+- 10 lotes reais de imóvel urbano processados ponta a ponta, com dossiê revisado por
+  advogado do time; e ≥ 20 lotes de outras classes corretamente classificados e
+  catalogados em `TRIAGEM`, sem valor estimado indevidamente;
 - **100%** dos números com procedência rastreável (auditoria manual em 3 dossiês);
 - zero falso-negativo no Portão 1 em conjunto de teste com processos do escritório;
 - `hasta replay` reproduz resultado idêntico a partir do snapshot;
