@@ -1,0 +1,19 @@
+# Ambiente
+.env
+.env.*
+!.env.example
+.venv/
+__pycache__/
+*.py[cod]
+
+# Dados locais (nunca versionar dados reais de processos)
+data/
+snapshots/
+*.sqlite
+*.db
+
+# Ferramentas
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.DS_Store
