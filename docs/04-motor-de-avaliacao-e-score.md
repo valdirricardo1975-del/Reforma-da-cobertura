@@ -37,6 +37,10 @@ distinção — é a origem da maioria dos falsos positivos do mercado.
 
 ## 2. Motor 2 — Blindagem jurídica (`Grau de Blindagem` 0–100)
 
+> **Implementado** em `src/hasta/score/blindagem.py`. O catálogo completo de regras,
+> com fundamento, efeito numérico e status de validação, está no
+> [doc 08](08-catalogo-de-regras.md), gerado a partir do próprio motor.
+
 Determinado por regras, não por opinião. Entradas: `regime_transmissao`, texto do
 edital, plano homologado, decisão autorizadora, natureza do procedimento, ônus.
 
@@ -68,7 +72,9 @@ T(posse_mansa)           = i(ocupação, necessidade_de_imissão/desocupação,
                              congestionamento_da_vara, resistência_esperada)
 ```
 
-**Caçador de Vícios** — checklist executável, com evidência para cada item:
+**Caçador de Vícios** — checklist executável, com evidência para cada item
+(**implementado** em `src/hasta/score/vicios.py`; itens V01 a V14 no
+[doc 08](08-catalogo-de-regras.md)):
 
 - intimação de todos os legitimados do art. 889 do CPC (executado, cônjuge, credor
   hipotecário/pignoratício, coproprietário, usufrutuário, titular de direito de
@@ -82,7 +88,10 @@ T(posse_mansa)           = i(ocupação, necessidade_de_imissão/desocupação,
   falência (art. 142, § 2º, da LFR) `⚠ verificar redação vigente`
 
 Cada item ausente **não** vira nota baixa silenciosa: vira `Lacuna` explícita no dossiê
-com a diligência recomendada.
+com a diligência recomendada. E o motor reporta **dois números distintos** — risco de
+desfazimento por vício constatado, e incerteza pela parte do checklist que ninguém
+verificou —, porque somá-los apagaria a informação que decide o próximo passo: se o
+problema é o ativo ou a nossa diligência.
 
 ## 4. Motor 4 — Liquidez de saída
 

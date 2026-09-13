@@ -48,6 +48,7 @@ trilha auditável da origem de cada informação (doc [06](docs/06-compliance-et
 | [05 — Fontes de dados](docs/05-fontes-de-dados.md) | Registro de fontes com postura jurídica, mapa sinal→fonte→antecipação, regras de coleta |
 | [06 — Compliance e ética](docs/06-compliance-etica-e-seguranca.md) | Impedimentos, muralha ética, LGPD/ANPD, segurança, limites de autonomia |
 | [07 — Roteiro e validação](docs/07-roadmap-e-validacao.md) | Fases 0–6 com critérios de aceite mensuráveis e painel de KPIs |
+| [08 — Catálogo de regras](docs/08-catalogo-de-regras.md) | **Gerado do código.** Cada regra de blindagem e de vícios com fundamento, efeito e status de validação jurídica |
 
 ## Estado atual
 
@@ -66,6 +67,28 @@ Pronto e coberto por testes (`src/hasta/core/`):
 | `estados.py` | máquinas de estado do procedimento concursal e da oportunidade |
 | `evidencia.py` | procedência obrigatória e muralha ética: origem pegajosa e portão que levanta exceção |
 | `entidades.py` | entidades canônicas do doc 03 |
+
+Motores determinísticos (`src/hasta/score/`):
+
+| Módulo | O que entrega |
+|---|---|
+| `explicacao.py` | conta aberta: cada ajuste com regra, fundamento e status; teto vence soma de ajustes |
+| `blindagem.py` | Grau de Blindagem 0–100 por regime de transmissão, com 23 regras catalogadas |
+| `vicios.py` | checklist de 14 nulidades, com risco detectado e incerteza de verificação reportados **separadamente** |
+
+Duas escolhas que evitam otimismo silencioso:
+
+* **Teto em vez de desconto** para lacuna de verificação — sem certidão de matrícula
+  conferida, um ativo de falência não chega a `BLINDADO_FORTE`, mesmo com cláusula
+  expressa de não sucessão no edital.
+* **Risco detectado ≠ incerteza de verificação.** Um dossiê que diz "risco 5%,
+  incerteza 48%, resolva estas 12 diligências" é acionável; um índice único de 53%
+  esconde se o problema é o ativo ou a nossa diligência.
+
+O catálogo do doc 08 é **gerado a partir do motor** (`python scripts/gerar_catalogo.py`),
+e um teste falha se divergir: o que os sócios revisam é necessariamente o que o sistema
+aplica. Hoje são 38 regras, 7 marcadas `⚠️ a validar` — inclusive a assimetria central do
+nicho (art. 142, § 2º, da Lei 11.101/2005: na falência não há piso de preço vil).
 
 Decisões de escopo tomadas em 12/09/2026: ADR-0011 a 0014 (doc 02, § 6).
 
