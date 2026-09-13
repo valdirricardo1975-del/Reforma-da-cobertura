@@ -49,10 +49,14 @@ trilha auditável da origem de cada informação (doc [06](docs/06-compliance-et
 | [06 — Compliance e ética](docs/06-compliance-etica-e-seguranca.md) | Impedimentos, muralha ética, LGPD/ANPD, segurança, limites de autonomia |
 | [07 — Roteiro e validação](docs/07-roadmap-e-validacao.md) | Fases 0–6 com critérios de aceite mensuráveis e painel de KPIs |
 | [08 — Catálogo de regras](docs/08-catalogo-de-regras.md) | **Gerado do código.** Cada regra de blindagem e de vícios com fundamento, efeito e status de validação jurídica |
+| [09 — Estado e retomada](docs/09-estado-e-retomada.md) | Onde o projeto parou, pendências herdadas e ordem de retomada |
 
 ## Estado atual
 
-**Fase 1 em andamento — núcleo de domínio implementado.** Por decisão de projeto
+> **Desenvolvimento suspenso em 13/09/2026** para avaliação da proposta NEXUM Capital &
+> Recovery. Ponto de retomada registrado no [doc 09](docs/09-estado-e-retomada.md).
+
+**Fase 1 — núcleo de domínio e motores jurídicos implementados.** Por decisão de projeto
 (ADR-0001), o modelo canônico vem antes dos coletores.
 
 Pronto e coberto por testes (`src/hasta/core/`):
