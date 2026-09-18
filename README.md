@@ -53,10 +53,11 @@ trilha auditável da origem de cada informação (doc [06](docs/06-compliance-et
 
 ## Estado atual
 
-> **Desenvolvimento suspenso em 13/09/2026** para avaliação da proposta NEXUM Capital &
-> Recovery. Ponto de retomada registrado no [doc 09](docs/09-estado-e-retomada.md).
+> **Retomado em 18/09/2026** com escopo definido: apenas ativos estressados,
+> principalmente imóveis. Estrutura de capital e parâmetros no
+> [doc 09](docs/09-estado-e-retomada.md).
 
-**Fase 1 — núcleo de domínio e motores jurídicos implementados.** Por decisão de projeto
+**Fase 1 — núcleo de domínio, motores jurídicos e motor de retorno implementados.** Por decisão de projeto
 (ADR-0001), o modelo canônico vem antes dos coletores.
 
 Pronto e coberto por testes (`src/hasta/core/`):
@@ -79,6 +80,7 @@ Motores determinísticos (`src/hasta/score/`):
 | `explicacao.py` | conta aberta: cada ajuste com regra, fundamento e status; teto vence soma de ajustes |
 | `blindagem.py` | Grau de Blindagem 0–100 por regime de transmissão, com 23 regras catalogadas |
 | `vicios.py` | checklist de 14 nulidades, com risco detectado e incerteza de verificação reportados **separadamente** |
+| `retorno.py` | preço total, carrego ao CDI, TIR do equity, margem até a ruína e **teto de lance** |
 
 Duas escolhas que evitam otimismo silencioso:
 
@@ -88,6 +90,9 @@ Duas escolhas que evitam otimismo silencioso:
 * **Risco detectado ≠ incerteza de verificação.** Um dossiê que diz "risco 5%,
   incerteza 48%, resolva estas 12 diligências" é acionável; um índice único de 53%
   esconde se o problema é o ativo ou a nossa diligência.
+* **Deságio não é retorno.** Um lance a 60% da avaliação — "40% de deságio" na linguagem
+  dos agregadores — entrega 4,5% ao ano depois de comissão, ITBI, registro, débitos,
+  desocupação, regularização, haircut e corretagem. Contra *hurdle* de 25%, reprova.
 
 O catálogo do doc 08 é **gerado a partir do motor** (`python scripts/gerar_catalogo.py`),
 e um teste falha se divergir: o que os sócios revisam é necessariamente o que o sistema

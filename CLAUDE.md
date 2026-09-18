@@ -5,10 +5,18 @@ judicial e falência. Escritório de advocacia especializado em insolvência.
 
 ## Estado
 
-**Desenvolvimento suspenso em 13/09/2026** para avaliação da proposta NEXUM Capital &
-Recovery (veículo societário concebido em paralelo pelo provável sócio). Antes de retomar
-código, leia **`docs/09-estado-e-retomada.md`** — traz decisões, pendências e a ordem de
-retomada.
+**Desenvolvimento retomado em 18/09/2026**, com escopo e estrutura definidos
+(ADR-0015 a 0017):
+
+- **Escopo:** apenas busca, análise, compra e venda de **ativos estressados,
+  principalmente imóveis**. Fomento/recebíveis e recuperação tributária ficaram fora.
+- **Sociedade:** três partes iguais — Schmitti; Castor e Analice (Delivar e Mattos);
+  DCVM (Valdir, Daniel e Rosana) — R$ 2,5 milhões de subscrição cada.
+- **Funding:** R$ 100 milhões do sócio financiador, remunerados pelo CDI, com
+  preferência nas retiradas até a quitação dos aportes.
+- **Prioridade declarada:** o agente de busca e avaliação de ativos.
+
+Contexto e pendências: **`docs/09-estado-e-retomada.md`**.
 
 ## Leituras obrigatórias antes de mexer
 
@@ -27,6 +35,10 @@ retomada.
 - **Incerteza explícita** em p10/p50/p90; ranking pelo p10.
 - **Teto em vez de desconto** para lacuna de verificação.
 - **Risco detectado ≠ incerteza de verificação** — dois números, nunca um.
+- **Deságio não é retorno.** Ranking é por TIR líquida do carrego, nunca por desconto
+  sobre laudo. Prazo é variável de primeira ordem.
+- **Teto de lance sai do cenário pessimista**, não do central.
+- **Margem até a ruína andando junto com a TIR** em qualquer operação alavancada.
 - **Origem da informação é pegajosa**: derivação herda a mais restritiva. Só origem
   pública alimenta decisão de investimento; violação levanta exceção, não aviso.
 - **O agente nunca dá lance.** Autonomia é originar e analisar.
@@ -42,7 +54,8 @@ fazer perguntas de esclarecimento e alinhamento antes de decidir.
 ```bash
 uv venv && uv pip install -e ".[dev]"
 .venv/bin/ruff check . && .venv/bin/mypy && .venv/bin/python -m pytest -q
-.venv/bin/python scripts/demonstrar.py      # demonstração em português
+.venv/bin/python scripts/demonstrar.py        # blindagem e vícios, em português
+.venv/bin/python scripts/demonstrar_lance.py  # retorno, carrego e teto de lance
 .venv/bin/python scripts/gerar_catalogo.py  # regenera docs/08 (teste falha se divergir)
 ```
 

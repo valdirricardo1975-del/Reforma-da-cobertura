@@ -1,9 +1,23 @@
 # 09 — Estado do projeto e ponto de retomada
 
-> **Desenvolvimento suspenso em 13/09/2026**, a pedido, para avaliação da proposta
-> NEXUM Capital & Recovery (concepção paralela do provável sócio). Este documento
-> existe para que a retomada não perca contexto: o que foi decidido, o que está
-> pronto, o que está pendente e em que ordem continuar.
+> Suspenso em 13/09/2026 para avaliação da proposta NEXUM Capital & Recovery.
+> **Retomado em 18/09/2026**, com escopo e estrutura de capital definidos.
+
+## 0. O que ficou decidido em 18/09/2026
+
+| Tema | Decisão |
+|---|---|
+| Escopo | apenas busca, análise, compra e venda de **ativos estressados, principalmente imóveis**. Fomento/recebíveis e recuperação tributária ficaram **fora** |
+| Sociedade | três partes iguais, R$ 2,5 milhões cada: Schmitti; Castor e Analice (Delivar e Mattos); DCVM (Valdir, Daniel e Rosana) |
+| Funding | R$ 100 milhões do sócio financiador, remunerados pelo CDI, com preferência nas retiradas até a quitação dos aportes |
+| Prioridade | o agente de busca e avaliação de ativos |
+
+Efeitos registrados nos ADR-0015 (escopo), ADR-0016 (custo de capital observável, com
+carrego e *hurdle*) e ADR-0017 (Portão 1 cruzando as bases de **dois** escritórios).
+
+Duas boas notícias do estreitamento de escopo: a ferramenta passa a cobrir **100% do
+escopo do negócio**, e não um terço dele; e o risco de conflito cai muito, porque
+desaparece a hipótese de financiar cliente do escritório.
 
 ## 1. O que é o projeto
 
@@ -58,8 +72,10 @@ Código em `src/hasta/`, 141 testes passando offline, `ruff` e `mypy strict` sem
 | `score/explicacao.py` | conta aberta; teto vence soma de ajustes |
 | `score/blindagem.py` | Grau de Blindagem 0–100, 23 regras catalogadas |
 | `score/vicios.py` | checklist de 14 nulidades; risco detectado e incerteza reportados separadamente |
+| `score/retorno.py` | preço total, carrego ao CDI, TIR do equity, margem até a ruína, **teto de lance** |
 | `report/catalogo.py` | doc 08 gerado do motor, com teste anti-divergência |
-| `scripts/demonstrar.py` | demonstração em português de três lotes de exemplo |
+| `scripts/demonstrar.py` | blindagem e vícios em três lotes de exemplo |
+| `scripts/demonstrar_lance.py` | retorno, efeito do prazo, efeito da alavancagem e teto de lance |
 
 ## 4. Pendências herdadas
 
@@ -87,24 +103,40 @@ domínios `*.jus.br`, sites de leiloeiros e portais imobiliários. Consequência
   com teste que o mantém visível — preencher de memória plantaria erro silencioso;
 - as sete premissas acima não puderam ser conferidas em fonte primária.
 
-### 4.3 Insumos que dependem do escritório
+### 4.3 Parâmetros de capital a confirmar pelo comitê
 
-1. Base de processos do escritório (todas as OABs, sócios e associados) — é o insumo do
-   Portão 1; sem ela a verificação de impedimento do advogado da causa não funciona.
+O motor de retorno roda com padrões declarados que **precisam de confirmação**, porque
+mudam diretamente o teto de lance:
+
+| Parâmetro | Padrão adotado | Por que importa |
+|---|---|---|
+| Taxa do funding | 15% ao ano | é o CDI mais o *spread*, se houver; define o carrego |
+| *Hurdle* do equity | 25% ao ano | é o piso de aprovação; define o teto de lance |
+| Participação da dívida | 80% | infla a TIR e encurta a margem até a ruína |
+| ITBI | 3% sobre o lance | a base real varia por município e às vezes é o valor venal |
+| Tributação do ganho | **zero** (placeholder) | pode consumir de 20% a 34% do resultado |
+| Corretagem na saída | 6% | entra no líquido da venda |
+
+### 4.4 Insumos que dependem dos escritórios
+
+1. Base de processos de **DCVM e de Delivar e Mattos** (todas as OABs, sócios e
+   associados) — é o insumo do Portão 1; sem ela a verificação de impedimento não
+   funciona. Cruzamento por número de processo, não por lista de clientes (ADR-0017).
 2. Três a cinco editais reais de leilão em falência ou RJ, em PDF, para servirem de
    *fixture* do extrator de editais.
 3. Parecer interno sobre aquisição de ativos concursais por estrutura ligada ao
    escritório (doc 06, § 8) — agora entrelaçado com a análise da NEXUM.
 
-## 5. Ordem de retomada sugerida
+## 5. Ordem de trabalho a partir de 18/09/2026
 
-1. **Decidir o veículo** (NEXUM, estrutura própria ou ambos) — porque isso define o
-   Portão 1, o desenho da muralha e quem é o destinatário do dossiê.
-2. Validar as sete premissas jurídicas e aplicar no catálogo.
-3. Rodar os *spikes* de DataJud, DJEN e PNAJ em ambiente com egresso liberado.
-4. Escriba: extrator de edital com citação obrigatória, contra *fixtures* reais.
-5. Adaptadores DataJud e DJEN; preencher o mapeamento TPU.
-6. Motor de valor justo para imóvel urbano; promover a classe a `CALIBRADO`.
+1. ~~Decidir o veículo~~ — **feito** (ADR-0015 a 0017).
+2. ~~Motor de retorno, carrego e teto de lance~~ — **feito**.
+3. Confirmar os parâmetros de capital do § 4.3 e as sete premissas jurídicas do § 4.1.
+4. **Motor de valor justo para imóvel urbano** — é o insumo que falta para o teto de
+   lance deixar de depender de estimativa manual. Depende de definir a fonte de
+   comparáveis.
+5. Escriba: extrator de edital com citação obrigatória, contra *fixtures* reais.
+6. Adaptadores DataJud e DJEN; preencher o mapeamento TPU (exige egresso liberado).
 7. Dossiê e fluxo de comitê.
 
 Detalhamento de fases e critérios de aceite: doc 07.

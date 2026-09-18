@@ -241,6 +241,50 @@ baseada em número medido: custo por oportunidade promovida e ganho real de lat�
 minutos antes de provar o funil seria otimizar a variável errada. Efeito colateral
 desejado: o modelo canônico não nasce acoplado ao formato de nenhum fornecedor.
 
+### ADR-0015 — Escopo inicial: ativos estressados, com primazia dos imóveis
+*Decisão dos sócios em 18/09/2026.* O veículo inicia **apenas** no segmento de busca,
+análise, compra e venda de ativos estressados, principalmente imóveis. As frentes de
+**fomento/recebíveis** e **recuperação tributária**, cogitadas na concepção paralela,
+ficam **fora do escopo**.
+*Consequências:* (a) confirma o ADR-0012 sem alteração — pipeline multiclasse com
+primazia do imóvel urbano; (b) o risco de conflito cai muito, porque desaparece a
+hipótese de financiar cliente do escritório; (c) a ferramenta cobre agora **100% do
+escopo do negócio**, e não um terço dele.
+
+### ADR-0016 — Custo de capital observável: o retorno passa a ter *hurdle* e carrego
+*Decisão dos sócios em 18/09/2026.* Estrutura de capital: R$ 7,5 milhões de capital
+social (R$ 2,5 milhões por parte, três partes iguais) e **funding do sócio financiador
+de R$ 100 milhões**, remunerado pelo CDI, com **preferência nas retiradas** até a
+quitação dos aportes.
+*Consequências arquiteturais — as mais importantes até aqui:*
+
+1. O `k` da equação central (doc 01, § 2.1) deixa de ser abstrato: existe **taxa
+   contratada**, e portanto existe **piso objetivo de aprovação**. O motor passa a
+   responder "supera o custo de capital?", não apenas "está barato?".
+2. **Custo de carregamento vira termo obrigatório.** Em ativo judicial, o intervalo
+   entre o lance e a venda é de 12 a 36 meses, e nesse período o CDI corre enquanto o
+   ativo não gera caixa. Deságio nominal de 40% pode virar retorno nulo por decurso de
+   prazo. Ignorar o carrego seria o erro mais caro que este sistema poderia cometer.
+3. **Prazo passa a ser variável de primeira ordem**, ao lado do preço. `T_posse` e
+   `T_venda` deixam de ser contexto e entram no cálculo.
+4. A preferência nas retiradas torna o retorno do equity **residual e tardio**: o
+   número que interessa aos sócios é a TIR *depois* de CDI e principal. O motor calcula
+   nessa ordem.
+5. Estrutura de dívida (CDI) é **mais barata para os sócios** do que retorno
+   preferencial com participação no *upside*, desde que o *spread* do ativo sobre o CDI
+   seja real e o prazo, controlado. As duas condições são exatamente o que o motor mede.
+
+### ADR-0017 — Portão 1 cruza as bases de dois escritórios
+*Decisão dos sócios em 18/09/2026.* O veículo tem sócios de dois escritórios de
+advocacia — DCVM e Delivar e Mattos. O portão de impedimento (doc 06, § 1) passa a
+cruzar **as duas** bases de processos: lote em que qualquer um dos escritórios atue, ou
+tenha atuado, é impedimento do veículo, não apenas do sócio.
+*Consequências:* (a) são necessárias duas bases de processos, com todas as OABs, sócios
+e associados de cada escritório; (b) a muralha ética do ADR-0009 vale para as duas
+origens de informação; (c) é preciso definir quem opera e audita o cruzamento, já que
+nenhum dos dois escritórios verá a base do outro em claro — o cruzamento deve ser feito
+por identificador de processo, não por lista de clientes.
+
 ## 7. Pilha tecnológica proposta
 
 | Camada | Escolha | Justificativa |

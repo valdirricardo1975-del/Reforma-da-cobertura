@@ -108,6 +108,48 @@ Alvo de honestidade: para planta industrial *single-purpose* em cidade pequena, 
 haircut deve ser grande e o sistema deve dizer isso em vez de exibir um deságio
 sedutor.
 
+## 4-A. Motor 7 — Retorno, carrego e teto de lance
+
+> **Implementado** em `src/hasta/score/retorno.py`. Criado pela decisão de 18/09/2026
+> (ADR-0016), que tornou o custo de capital observável: há funding contratado a CDI com
+> preferência nas retiradas.
+
+É o motor que converte avaliação em **decisão**, na ordem em que o dinheiro se move:
+
+```
+investimento_total = lance + comissão + ITBI + registro + custas
+                   + débitos que seguem o bem + desocupação + regularização
+
+dívida_na_saída    = dívida × (1 + taxa_funding)^(meses/12)     ← o carrego
+
+líquido_da_saída   = valor_justo × (1 − haircut) − corretagem − tributo sobre o ganho
+
+caixa_ao_equity    = líquido_da_saída − dívida_na_saída          ← preferência do financiador
+TIR_equity         = (caixa_ao_equity / equity)^(12/meses) − 1
+```
+
+Quatro decisões de projeto deste motor:
+
+1. **Prazo é variável de primeira ordem.** Mesmo lance, mesmo imóvel, mesma avaliação:
+   a 12 meses o negócio aprova, a 60 meses reprova. O carrego não é detalhe de
+   modelagem — é o que distingue deságio de retorno.
+2. **Cenários coerentes, não aritmética de quantis.** A faixa p10/p50/p90 vem de rodar
+   o cálculo inteiro em três estados do mundo internamente consistentes (valor baixo
+   *com* prazo longo *com* custo alto), nunca de somar quantis de termos isolados —
+   quantis não somam (`intervalo.py`).
+3. **O teto de lance é definido pelo cenário pessimista.** É o número que vai para a
+   praça: acima dele, não se dá lance. Teto calculado no cenário central é convite a
+   pagar caro.
+4. **Margem até a ruína, ao lado da TIR.** Em operação alavancada a TIR engana: 90% de
+   financiamento produz TIR de 181% com apenas 40% de margem antes de o equity zerar.
+   O motor reporta o valor de saída que zera o capital próprio, porque TIR alta com
+   margem fina é aposta, não investimento.
+
+**O achado que justifica o motor:** um lance a 60% da avaliação — "40% de deságio" na
+linguagem dos agregadores — entrega TIR de 4,5% ao ano no cenário central, contra
+*hurdle* de 25%. Reprovado. Deságio de vitrine não é oportunidade, e essa é a diferença
+entre ranquear por desconto sobre laudo e ranquear por retorno líquido do carrego.
+
 ## 5. Motor 5 — Intensidade competitiva (diferencial exclusivo)
 
 Nenhum concorrente estima quem vai disputar. Nós podemos, porque acumulamos histórico
